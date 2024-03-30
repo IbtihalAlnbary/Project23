@@ -1,4 +1,3 @@
-
 # from django.contrib import admin
 # from django.urls import path, include
 # from . import views 
@@ -20,13 +19,11 @@ from . import views
 # ]
 
 urlpatterns = [
-   
- path('',views.home,name="home"),
- path('signup/',views.signup,name="signup"),
- path('signin/',views.signin,name="signin"),
- path('signout/',views.signout,name="signout"),
- path('homepage/',views.homepage,name="homepage"),
-  path('citizenHomepage/',views.citizenHomePage,name="citizenHomepage")
-
-
+    path('', views.home, name="home"),
+    path('signup/', views.signup, name="signup"),
+    path('signin/', views.signin, name="signin"),
+    path('signout/', views.signout, name="signout"),
+    path('homepage/', views.homepage, name="homepage"),
+    path('HomeClient/', views.HomeClient, name="HomeClient"),
+    path('citizenHomepage/', views.citizenHomePage, name="citizenHomepage"),
 ]

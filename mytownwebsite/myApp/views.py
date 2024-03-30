@@ -18,7 +18,6 @@ def citizenHomePage(request):
 
 
 
-
 def signup(request):
    
     if request.method == "POST":
@@ -29,39 +28,31 @@ def signup(request):
         email = request.POST['email']
         pass1 = request.POST['pass1']
         pass2 = request.POST['pass2']
-
         if pass1 == pass2:
             myuser = User.objects.create_user(username, email, pass1)
             myuser.first_name = fname
             myuser.last_name = lname  # Corrected the attribute name
-
             myuser.save()  # Corrected method name
-
             messages.success(request, "Your account has been successfully created!")
             return redirect('signin')
-
         else:
             messages.error(request, "Passwords do not match.")
             return redirect('signup')
-
     return render(request, "mytown/signup.html")
 
 def signin(request):
-
     if request.method == 'POST':
         username=request.POST['username']
         pass1=request.POST['pass1']
-
         user=authenticate(username=username, password=pass1 )
         if user is not None:
             login(request, user)
             fname = user.first_name 
-            return render(request,"mytown/index", {'fname':fname})
+            return redirect('HomeClient')
             
         else:
             messages.error(request, "Bad Credentials!")
             return redirect('home')
-
     return render(request,"mytown/signin.html" )
 
 def signout(request):
@@ -72,3 +63,5 @@ def signout(request):
 
 def homepage(request):
     return render(request,"homepage" )
+def HomeClient(request):
+    return render(request,"mytown/HomeClient.html" )
