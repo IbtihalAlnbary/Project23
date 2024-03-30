@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome to MyTown</title>
+<!-- Link to the handwritten font -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap">
+<style>
+    body {
+        background-image: url("backgroundchanged.png");
+        background-size: cover; 
+        background-position: center; 
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .billboard {
+        text-align: center;
+    }
+
+    .container {
+        margin-bottom: 40px;
+    }
+
+    h1, h2 {
+        font-family: 'Dancing Script', cursive;
+        color: black;
+    }
+
+    h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    .options {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .option {
+        padding: 15px 30px;
+        border: 2px solid black;
+        border-radius: 30px;
+        background-color: transparent;
+        color: black;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+        transition-duration: 0.4s;
+    }
+
+    .option:hover {
+        background-color: black;
+        color: white;
+    }
+
+    .rate-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        border: 2px solid black;
+        border-radius: 30px;
+        background: #2c3e50;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        transition-duration: 0.4s;
+    }
+
+    .rate-button:hover {
+        background: #4e54c8;
+    }
+</style>
+</head>
+<body>
+<div class="billboard">
+    <div class="container">
+        <h1>Welcome to MyTown!</h1>
+        <h2>
+          <center>
+            Here you'll be able to provide us with YOUR
+            <br>complaints regarding your city/town in an</br> 
+            easy, manageable, and reliable manner.</center></h2>
+        <div class="options">
+            <div class="option" onclick="location.href='signLogInCivilian'">
+                Citizen
+            </div>
+            <div class="option" onclick="location.href='loginWorker'">
+                Worker
+            </div>
+            <div class="option" onclick="location.href='loginManager'">
+                Manager
+            </div>
+        </div>
+    </div>
+    <button class="rate-button">Rate Our Website</button>
+</div>
+</body>
+</html>
