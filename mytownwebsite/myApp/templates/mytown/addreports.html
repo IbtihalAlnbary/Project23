@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-        <title> MYTOWNWEB </title>
+        <title> my town </title>
        <style> 
       html {
       height: 100%;
@@ -15,6 +15,7 @@
 
       .container {
         width: 300px;
+        hight: 250px
         margin: 0 auto;
         background-color: #f2f2f2;
         border-radius: 5px;
@@ -122,7 +123,7 @@
 <body>
   <div class="container">
     <h1>Add Report</h1>
-    <form action="/mytown/addreports/" method="post">
+    <form action="/addreports/" method="post">
       {% csrf_token %}
       <div class="form-group">
         <label for="title" >Title:</label> 
@@ -133,7 +134,7 @@
       <div class="form-group">
         <label for="">Neighborhood:</label> 
         <select id="neighborhood" name="neighborhood" required>
-            <option value=" "> </option>
+          <option value="">Select a Neighborhood...</option>
            <option value="El-Finesh">El-Finesh</option>
 <option value="El-Ubeid">El-Ubeid</option>
 <option value="zone 8">zone 8</option>
@@ -161,7 +162,25 @@
 
         </select>
       </div>
-  
+  <div class="form-group">
+    <label for="facility">Facility:</label>
+    <select id="facility" name="facility"  required onchange="checkOther(this)">
+        <option value="">Select a facility...</option>
+        <option value="Healthcare Deficiency">Healthcare Deficiency</option>
+        <option value="Transportation Weakness">Transportation Weakness</option>
+        <option value="Electricity Service Center">Electricity Service Center</option>
+        <option value="Water Treatment Plant">Water Treatment Plant</option>
+        <option value="Road Maintenance Workshop">Road Maintenance Workshop</option>
+        <option value="Street Lighting Facility">Street Lighting Facility</option>
+        <option value="Environmental Conservation Hub">Environmental Conservation Hub</option>
+        <option value="Animal Control Facility">Animal Control Facility</option>
+         <option value="Traffic">Traffic</option>
+        <option value="Other">Other</option>
+    </select>
+        <input type="text" id="otherFacility" name="otherFacility" style="display:none;" placeholder="Enter other facility...">
+
+</div>
+
       <div class="form-group">
         <label for="">Description:</label> 
         <textarea id="description" name="description" required placeholder="Provide a detailed description of the report (up to 100 words)" maxlength="100" required></textarea>
@@ -183,11 +202,18 @@
     </form>
   </div>
 
-  <!-- <script>
-    function goBack() {
-      window.history.back();
+<script>
+function checkOther(select) {
+    var otherFacilityInput = document.getElementById("otherFacility");
+    if (select.value == "Other") {
+        otherFacilityInput.style.display = "block";
+        otherFacilityInput.required = true;
+    } else {
+        otherFacilityInput.style.display = "none";
+        otherFacilityInput.required = false;
     }
-  </script> -->
+}
+</script>
 </body>
 </html>
 

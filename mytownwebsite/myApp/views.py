@@ -1,5 +1,4 @@
 from django.shortcuts import render
-
 from telnetlib import LOGOUT
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
@@ -9,8 +8,7 @@ from django.contrib.auth import authenticate,login
 from django.shortcuts import redirect, render
 from django.contrib.auth.hashers import make_password  # Import make_password for password hashing
 from django.contrib import messages
-# from .models import AddReport
-# from .models import AssignedReport 
+
 from django.contrib.auth.models import User 
 from django.contrib.auth import login
 from django.contrib import messages
@@ -21,16 +19,16 @@ from .models import Workerlogin
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-# from.Form import AddReportForm
+from.Form import AddReportForm
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.shortcuts import redirect, get_object_or_404
-# from .models import ManagerReports
-# from .models import citezinreports
+from .models import ManagerReports
+from .models import citezinreports
 from .models import Workerlogin
-# from .models import AssignedReport
+# 
 from django.shortcuts import render, get_object_or_404
-# from .models import AddReport
+from .models import AddReport
 # Create your views here.
 
 
@@ -119,6 +117,7 @@ def addreports(request):
     if request.method == 'POST':
         title = request.POST.get('title', '')
         neighborhood = request.POST.get('neighborhood', '')
+        Facility = request.POST.get('Facility', '')
         description = request.POST.get('description', '')
         location = request.POST.get('location', '')
         photo = request.FILES.get('photo', None)
@@ -127,6 +126,7 @@ def addreports(request):
             report = AddReport.objects.create(
                 title=title,
                 neighborhood=neighborhood,
+                Facility =Facility,
                 description=description,
                 location=location,
                 picture=photo
@@ -135,6 +135,7 @@ def addreports(request):
             report = AddReport.objects.create(
                 title=title,
                 neighborhood=neighborhood,
+                Facility =Facility,
                 description=description,
                 location=location,
             )
