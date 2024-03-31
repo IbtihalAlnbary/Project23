@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Worker Login</title>
+  <style>
+    html, body {
+      height: 100%;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(#fff, #243b55);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-container {
+      width: 40%;
+      height: 40%;
+      background-color: #f2f2f2;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: left;
+      padding: 20px;
+       border-radius: 20px; 
+       border:2px;   
+       }
+
+    h2 {
+      text-align:center;
+      color: #333333;
+      font-size: 25px
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 15px;
+      color: #333333;
+       border-radius: 5px;
+    }
+
+    input {
+      padding: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #cccccc;
+      border-radius: 20px;
+       border:5px;   
+
+    }
+
+    button {
+      background-color: #243b55;
+      color: #ffffff;
+      padding: 8px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+    }
+    input[type="text"],
+input[type="password"] {
+    width: calc(100% - 170px); /* Adjust to account for label width and any additional padding/margin */
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+h1 {
+        text-align: left;
+        font-size: 15px;
+      }
+      
+.button-group button {
+    width: 100%;
+    padding: 10px;
+    background-color: #243b55;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.button-group button:hover {
+    background-color: #243b55;
+}
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <h2>Login</h2>
+    <form action="/workerlogin/" method="post">
+      {% csrf_token %}
+       {% comment %} {{ form.as_p} } {% endcomment %}
+      <div class="form-group">
+      <h1>please fill in this form to login </h1>
+  <td></td>
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+    </div>
+    
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" pattern="[A-Za-z0-9]{6,}" title="Password must contain at least 6 characters, including both letters and numbers" required>
+    </div>
+      <div class="button-group">
+        <button type="submit">Login</button>
+      </div>
+    </form>
+    {% comment %} {% endblock %} {% endcomment %}
+  </div>
+
+</body>
+</html>
+
