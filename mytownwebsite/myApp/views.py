@@ -111,7 +111,7 @@ def workerlogin(request):
     return render(request, "mytown/workerlogin.html")
 
 # def workers_list(request):
-#     worker = Workerlogin.objects.all()
+#     worker = Workerlogin.objects.all()g
 #     total_reports = Workerlogin.objects.count()
 #     return render(request, 'account/workerslist.html', {'worker': worker})
 
