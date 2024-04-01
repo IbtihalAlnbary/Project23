@@ -6,34 +6,52 @@
 <title>citezin reports</title>
 <style>
 html {
+
   height: 100%;
 }
-
-body {
-  width:100%;
-  height:100%;
+html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif; 
   background: linear-gradient(#fff, #243b55);
 }
 
+.table-container {
+  overflow-x: auto;
+}
+
+h1 { 
+  color: #243b55; 
+  font-family: 'Trocchi', serif; 
+  font-size: 45px; 
+  font-weight: normal; 
+  line-height: 48px; 
+  margin: 0;  
+  text-align:center;
+}
+
 .table-list-container {
-  max-width: 800px;
+  max-width: 90%; /* Adjust the maximum width of the table container */
   margin: 20px auto;
   background-color: #ffffff;
   border: 1px solid #d2d2d2;
   position: relative;
   z-index: 0;
-}
-.table-container {
-    overflow-x: auto; /* or overflow-x: hidden; to hide horizontal overflow */
+  overflow-x: auto;
 }
 
-.table-container table {
-    width: 100%;
-    border-collapse: collapse;
+.table-list {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* Ensure fixed layout to prevent column width adjustment */
 }
+
+.table-list th, .table-list td {
+  padding: 10px;
+  text-align: left;
+}
+
 
 @media (max-width: 640px) {
   .table-list-container {
@@ -207,10 +225,10 @@ h1 { color: #243b55; font-family: 'Trocchi', serif; font-size: 45px; font-weight
             <a class="nav-link" href="#">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">My Account</a>
+            <a class="nav-link" href="#">Profile</a>
           </li>
           <li class="nav-item">
-          <a class="nav-link" href="">Reports list</a>
+          <a class="nav-link" href=""> My Reports </a>
           </li>
           <li class="nav-item">
              <a class="nav-link" href="{% url 'addreports' %}">Add Report</a>
@@ -238,6 +256,7 @@ h1 { color: #243b55; font-family: 'Trocchi', serif; font-size: 45px; font-weight
             <th><button type="button" class="sort" data-sort="jSortNumber">#<i class="caret"></i></button></th>
             <th><button type="button" class="sort" data-sort="jSortTitle">Title <i class="caret"></i></button></th>
             <th><button type="button" class="sort" data-sort="jSortcity">neighborhood<i class="caret"></i></button></th>
+            <th><button type="button" class="sort" data-sort="jSortfacility">facility<i class="caret"></i></button></th>
             <th><button type="button" class="sort" data-sort="jSortDescription">Description <i class="caret"></i></button></th>
             <th><button type="button" class="sort" data-sort="jSortLocation">Location <i class="caret"></i></button></th>
             <th><button type="button" class="sort" data-sort="jSortPhoto">Photo <i class="caret"></i></button></th>
@@ -252,6 +271,7 @@ h1 { color: #243b55; font-family: 'Trocchi', serif; font-size: 45px; font-weight
                 <td>{{ forloop.number }}</td>
                <td>{{ report.title }}</td>
                 <td>{{ report.neighborhood }}</td>
+               <td>{{ report.facility }}</td>
                 <td>{{ report.description }}</td>
                 <td>{{ report.location }}</td>
                 <td>{{ report.photo }}</td>

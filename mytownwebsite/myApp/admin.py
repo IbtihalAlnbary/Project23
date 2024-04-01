@@ -6,7 +6,7 @@ from .models import citezinreports
 from django.utils import timezone
 @admin.register(AddReport)
 class AddReportAdmin(admin.ModelAdmin):
-    list_display = ('title', 'neighborhood', 'description', 'location', 'picture')
+    list_display = ('title', 'neighborhood', 'facility','description', 'location', 'picture')
 
 @admin.register(AssignedReport)
 class AssignedReportAdmin(admin.ModelAdmin):

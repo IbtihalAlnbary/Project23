@@ -117,7 +117,7 @@ def addreports(request):
     if request.method == 'POST':
         title = request.POST.get('title', '')
         neighborhood = request.POST.get('neighborhood', '')
-        Facility = request.POST.get('Facility', '')
+        facility = request.POST.get('facility', '')  # Corrected field name to lowercase 'facility'
         description = request.POST.get('description', '')
         location = request.POST.get('location', '')
         photo = request.FILES.get('photo', None)
@@ -126,7 +126,7 @@ def addreports(request):
             report = AddReport.objects.create(
                 title=title,
                 neighborhood=neighborhood,
-                Facility =Facility,
+                facility =facility,
                 description=description,
                 location=location,
                 picture=photo
@@ -135,7 +135,7 @@ def addreports(request):
             report = AddReport.objects.create(
                 title=title,
                 neighborhood=neighborhood,
-                Facility =Facility,
+                facility =facility,
                 description=description,
                 location=location,
             )
@@ -172,6 +172,10 @@ def managerreports(request):
  return render(request, 'mytown/managerlist.html', {'reports': reports})
 
 
+# def profile(request):
+#  profile = signup.objects.all()
+# #  total_reports = AddReport.objects.count()
+#  return render(request, 'mytown/profile.html', {'profile': profile})
 
 def updatereport(request, id):
     report = get_object_or_404(AddReport, id=id)
