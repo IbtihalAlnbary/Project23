@@ -59,8 +59,29 @@ Managers can generate reports and analytics to identify trends, allocate resourc
 #### Administrative Controls
 
 The control panel includes administrative features to manage user accounts, monitor system activity, and ensure the platform's security and integrity.
+### Built With
+- visual studio code.
+- Python 3.11
+- Django 4.1.3
+- Sqlite3
+- HTML
 
+
+<!-- GETTING STARTED -->
 ## Getting Started
+
+### Install
+
+1. Install python (3.11).
+2. Download and open the project to your computer.
+3. Install Django (use the commands: ```py -m pip install Django```)
+4. Install the widgets (use the commands: ```pip install djangoframwork``` , ```pip install django-crispy-forms```,```pip install django_widget_tweaks```).
+5. migrate the project (use the commands: ```python manage.py makemigrations``` , ```python manage.py migrate --run-syncdb``` ).
+6. Run the project (use the command: ```python manage.py runserver```).
+
+
+
+## Getting Started(personas)
 
 To get started with MyTown:
 
