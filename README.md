@@ -38,7 +38,7 @@ Environmental Services: Handling issues related to waste management, recycling, 
 
 General Maintenance: Addressing miscellaneous issues reported by citizens that don't fall into specific categories.
 
-#### Updating Status
+####4. Updating Status
 
 Workers can update the status of tasks, providing real-time information . This feature promotes accountability and builds trust between the community and the workers.
 
@@ -59,7 +59,7 @@ Managers can generate reports and analytics to identify trends, allocate resourc
 #### Administrative Controls
 
 The control panel includes administrative features to manage user accounts, monitor system activity, and ensure the platform's security and integrity.
-### Built With
+### 4.Built With
 - visual studio code.
 - Python 3.11
 - Django 4.1.3
@@ -68,7 +68,7 @@ The control panel includes administrative features to manage user accounts, moni
 
 
 <!-- GETTING STARTED -->
-## Getting Started
+## 5.Getting Started
 
 ### Install
 
@@ -81,7 +81,7 @@ The control panel includes administrative features to manage user accounts, moni
 
 
 
-## Getting Started(personas)
+## 6.Getting Started(personas)
 
 To get started with MyTown:
 
