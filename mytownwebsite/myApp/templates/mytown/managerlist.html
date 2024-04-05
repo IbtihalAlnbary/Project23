@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reports list</title>
 <style>
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif; 
-  background: linear-gradient(#fff, #243b55);
-}
 
+html {
+  height: 100%;
+}
+    body {
+      font-family: sans-serif;
+      background: linear-gradient(#141e30, #243b55);
+    }
 .table-container {
   overflow-x: auto;
 }
@@ -60,6 +60,14 @@ h1 {
 
 .table-list th {
   border-bottom: 1px solid #d2d2d2;
+}
+table {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
 }
 
 .table-list td {
@@ -230,6 +238,25 @@ h1 {
 .check-button.checked:before {
   content: '\2714'; /* Heavy checkmark symbol */
 }
+.table-search {
+    position: relative;
+    margin-bottom: 20px; /* Add some space below the search box */
+}
+
+.search {
+    padding: 10px;
+    width: 300px;
+    border: 2px solid #007bff; /* Change border thickness and color */
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s; /* Add transition for smooth effect */
+    outline: 2px solid transparent; /* Add transparent outline */
+}
+
+.search:focus {
+    outline: 2px solid #0056b3; /* Change outline color when focused */
+    border-color: #0056b3;
+}
 </style>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
@@ -271,6 +298,9 @@ h1 {
 <div id="tableID" class="table-list-container">
     <h1> Reports List </h1>
 
+    <div class="table-search">
+        <input class="search" placeholder="Search by neighborhood">
+    </div>
     <table class="table-list" data-currentpage="1" style="height:268px;">
         <thead>
             <th><button type="button" class="sort" data-sort="timestamp">Date<i class="caret"></i></button></th>
@@ -299,15 +329,15 @@ h1 {
     </table>
     <table class="table-footer">
         <tr>
-            <td class="table-pagination">
-                <button type="button" class="jPaginateBack"><i class="material-icons keyboard_arrow_left">&#xe314;</i></button>
+            {% comment %} <td class="table-pagination"> {% endcomment %}
+                {% comment %} <button type="button" class="jPaginateBack"><i class="material-icons keyboard_arrow_left">&#xe314;</i></button>
                 <ul class="pagination"></ul>
                 <button type="button" class="jPaginateNext"><i class="material-icons keyboard_arrow_right">&#xe315;</i></button>
             </td>
             <td></td>
             <td class="table-search">
                 <input class="search" placeholder="Search by neighborhood">
-            </td>
+            </td> {% endcomment %}
         </tr>
     </table>
 </div>

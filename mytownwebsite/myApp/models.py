@@ -88,7 +88,7 @@ class AddReport(models.Model):
 
 
 class AssignedReport(models.Model):
-    choose= models.BooleanField(default=False)
+    choose= models.BooleanField('choose',default=False)
     reports = models.ForeignKey(AddReport, blank=True, null=True, on_delete=models.CASCADE)
     reportnumber = models.IntegerField()
     # date = models.DateTimeField(default=timezone.datetime)
@@ -111,7 +111,7 @@ class Meta:
         db_table = 'workerlogin'
 
 class citezinreports(models.Model):
-     date = models.DateTimeField(default=timezone.now)
+    #  date = models.DateTimeField(default=timezone.now)
      reports = models.ForeignKey(AddReport, blank=True, null=True, on_delete=models.CASCADE)
      reportnumber = models.IntegerField(default=0)
 
@@ -123,7 +123,7 @@ class Meta:
 
 
 class ManagerReports(models.Model):
-    date = models.DateTimeField(default=timezone.now)
+    # date = models.DateTimeField(default=timezone.now)
     reports = models.ForeignKey(AddReport, blank=True, null=True, on_delete=models.CASCADE)
     reportnumber = models.IntegerField()
 

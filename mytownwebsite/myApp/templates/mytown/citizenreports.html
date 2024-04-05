@@ -6,16 +6,12 @@
 <title>citezin reports</title>
 <style>
 html {
-
   height: 100%;
 }
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif; 
-  background: linear-gradient(#fff, #243b55);
-}
+    body {
+      font-family: sans-serif;
+      background: linear-gradient(#141e30, #243b55);
+    }
 
 .table-container {
   overflow-x: auto;
@@ -291,11 +287,11 @@ h1 { color: #243b55; font-family: 'Trocchi', serif; font-size: 45px; font-weight
     </table>
     <table class="table-footer">
         <tr>
-            <td class="table-pagination">
+            {% comment %} <td class="table-pagination">
                 <button type="button" class="jPaginateBack"><i class="material-icons keyboard_arrow_left">&#xe314;</i></button>
                 <ul class="pagination"></ul>
                 <button type="button" class="jPaginateNext"><i class="material-icons keyboard_arrow_right">&#xe315;</i></button>
-            </td>
+            </td> {% endcomment %}
         </tr>
     </table>
 </div>

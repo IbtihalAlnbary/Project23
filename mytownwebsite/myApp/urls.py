@@ -34,4 +34,6 @@ urlpatterns = [
     path('delete/<int:id>', views.delete, name='delete'),
     path('updatereport/<int:id>/', views.updatereport, name='updatereport'),
     # path('Reports/', views.check_reports, name='ckeck_reports'),
+     path('home/', views.home1, name='home'),
+    path('loginform/', views.loginform, name='loginform'),
 ]

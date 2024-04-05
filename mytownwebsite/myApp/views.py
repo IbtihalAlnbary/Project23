@@ -31,6 +31,11 @@ from django.shortcuts import render, get_object_or_404
 from .models import AddReport
 # Create your views here.
 
+def home1 (request):
+     return render(request, 'mytown/home.html')
+
+def loginform (request):
+     return render(request, 'mytown/3buttons.html')
 
 
 def home(request):
@@ -106,7 +111,7 @@ def workerlogin(request):
         )
         return redirect('reports_list')
 
-    return render(request, "mytown/workerlogin.html")
+    return render(request, 'mytown/workerlogin.html')
 
 # def workers_list(request):
 #     worker = Workerlogin.objects.all()g
@@ -149,7 +154,9 @@ def addreports(request):
 def reports_list(request):
     reports = AddReport.objects.all()
     total_reports = AddReport.objects.count()
-    choose = request.POST.get('choose', '') == 'on'
+    choose = request.POST.getlist("boxes")
+    for x in choose:
+        reports.objects.filter(pk=int(x)).update(choose=True)
 
     return render(request, 'mytown/reportslist.html', {'reports': reports})
 
