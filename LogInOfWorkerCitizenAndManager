@@ -1,0 +1,115 @@
+#The following file contains the login scripts regarding all possible varients worker, citizen, manager (they're more or less the same with slight changes):
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Page</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-container {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+form {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #666;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+</style>
+</head>
+<body>
+<div class="login-container">
+  <h2>welcome back!</h2>
+  <form action="#" onsubmit="return login()">
+    <div class="input-group">
+      <label for="username">your username:</label>
+      <input type="text" id="username" name="username" placeholder="Enter your username">
+    </div>
+    <div class="input-group">
+      <label for="password">your password:</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password">
+    </div>
+    <button type="submit">Login</button>
+  </form>
+</div>
+<script>
+database1 = []
+def add_user(username, password):
+    database1.append({'username': username, 'password': password})
+def user_exists(username):
+    return any(user['username'] == username for user in database1)
+def authenticate_user(username, password):
+    return any(user['username'] == username and user['password'] == password for user in database)
+def login():
+    username = document.getElementById('username').value
+    password = document.getElementById('password').value
+    if user_exists(username):
+        if authenticate_user(username, password):
+            alert('Login successful!')
+            return True 
+        else:
+            alert('Incorrect password. Please try again.')
+            return False
+    else:
+        alert('User does not exist. Please sign up.')
+        return False 
+#examples:
+add_user('user1', 'password1')
+add_user('user2', 'password2')
+add_user('user3', 'password3')
+</script>
+# Citizen and worker and Manager all have different databases for instance we may define that the 'database1' belong ONLY to the citizen and that 'database2' belongs ONLY to worker and that 'databse3' beloongs
+# ONLY to manager.
