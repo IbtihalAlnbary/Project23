@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db import models
-from django.utils import timezone
 from django.urls import reverse
 from django.db import models
 
@@ -64,18 +63,15 @@ class AddReport(models.Model):
 
          # Create related objects after saving AddReport
        assigned_report = AssignedReport.objects.create(
-            # date=timezone.now(),  # Optional, consider using auto_now_add
             choose=False,
             reports=self,  # Use self.id after saving
             reportnumber=self.id,
         )
        manager = ManagerReports.objects.create(
-            # date=timezone.now(),  # Optional, consider using auto_now_add
             reports=self,  # Use self.id after saving
             reportnumber=self.id,
         )
        citizen = citezinreports.objects.create(
-            # date=timezone.now(),  # Optional, consider using auto_now_add
             reports=self,  # Use self.id after saving
             reportnumber=self.id,
         )
@@ -91,7 +87,6 @@ class AssignedReport(models.Model):
     choose= models.BooleanField('choose',default=False)
     reports = models.ForeignKey(AddReport, blank=True, null=True, on_delete=models.CASCADE)
     reportnumber = models.IntegerField()
-    # date = models.DateTimeField(default=timezone.datetime)
 
     def __str__(self):
         return f"Assigned Report for {self.reports.title}"
@@ -111,7 +106,6 @@ class Meta:
         db_table = 'workerlogin'
 
 class citezinreports(models.Model):
-    #  date = models.DateTimeField(default=timezone.now)
      reports = models.ForeignKey(AddReport, blank=True, null=True, on_delete=models.CASCADE)
      reportnumber = models.IntegerField(default=0)
 
@@ -123,7 +117,6 @@ class Meta:
 
 
 class ManagerReports(models.Model):
-    # date = models.DateTimeField(default=timezone.now)
     reports = models.ForeignKey(AddReport, blank=True, null=True, on_delete=models.CASCADE)
     reportnumber = models.IntegerField()
 

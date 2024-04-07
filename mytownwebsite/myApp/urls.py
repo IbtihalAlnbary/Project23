@@ -19,13 +19,6 @@ from . import views
 # ]
 
 urlpatterns = [
-    path('', views.home, name="home"),
-    path('signup/', views.signup, name="signup"),
-    path('signin/', views.signin, name="signin"),
-    path('signout/', views.signout, name="signout"),
-    path('homepage/', views.homepage, name="homepage"),
-    path('HomeClient/', views.HomeClient, name="HomeClient"),
-    path('citizenHomepage/', views.citizenHomePage, name="citizenHomepage"),
      path('workerlogin/', views.workerlogin,name="workerlogin"),
     path('addreports/', views.addreports,name="addreports"),
     path('reportslist/', views.reports_list, name='reports_list'),
@@ -34,6 +27,6 @@ urlpatterns = [
     path('delete/<int:id>', views.delete, name='delete'),
     path('updatereport/<int:id>/', views.updatereport, name='updatereport'),
     # path('Reports/', views.check_reports, name='ckeck_reports'),
-     path('home/', views.home1, name='home'),
+     path('', views.home1, name='home'),
     path('loginform/', views.loginform, name='loginform'),
 ]
