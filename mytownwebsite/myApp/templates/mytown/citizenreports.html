@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>citezin reports</title>
+<style>
+html {
+  height: 100%;
+}
+    body {
+      font-family: sans-serif;
+      background: linear-gradient(#141e30, #243b55);
+    }
+
+.table-container {
+  overflow-x: auto;
+}
+
+h1 { 
+  color: #243b55; 
+  font-family: 'Trocchi', serif; 
+  font-size: 45px; 
+  font-weight: normal; 
+  line-height: 48px; 
+  margin: 0;  
+  text-align:center;
+}
+
+.table-list-container {
+  max-width: 90%; /* Adjust the maximum width of the table container */
+  margin: 20px auto;
+  background-color: #ffffff;
+  border: 1px solid #d2d2d2;
+  position: relative;
+  z-index: 0;
+  overflow-x: auto;
+}
+
+.table-list {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* Ensure fixed layout to prevent column width adjustment */
+}
+
+.table-list th, .table-list td {
+  padding: 10px;
+  text-align: left;
+}
+
+
+@media (max-width: 640px) {
+  .table-list-container {
+    border-width: 1px 0;
+  }
+}
+
+.table-list {
+  min-height: 176px;
+}
+
+.table-list th {
+  border-bottom: 1px solid #d2d2d2;
+}
+
+.table-list td {
+ overflow-wrap: break-word; 
+  vertical-align: top;
+  padding: 10px;
+  border-bottom: 1px solid #d2d2d2;
+}
+
+.table-list tr:last-child td {
+  height: auto;
+}
+
+/* Sort styles */
+th button.sort {
+  text-align: left;
+  padding: 0 10px;
+  line-height: 1.75rem;
+  border: none;
+  background: none;
+  display: block;
+  width: 100%;
+  font-size: 12px;
+  color: #888;
+  border-bottom: 1px solid transparent;
+}
+
+th button.sort.textcenter,
+th button.sort.text-center {
+  text-align: center;
+}
+
+th button.sort.textright,
+th button.sort.text-right {
+  text-align: right;
+}
+
+button.sort .bullet {
+  margin-top: 13px;
+}
+
+
+.table-list .caret:after {
+  content: "";
+}
+.long-sentence-column {
+  max-width: 200px; /* Adjust the width as needed */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+.asc .caret:after,
+.desc .caret:after {
+  width: 0;
+  height: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  content: "";
+  position: relative;
+  font-size: 0;
+}
+
+.asc .caret:after {
+  border-top: 3px solid #808080;
+  top: -3px;
+  right: -4px;
+}
+
+.desc .caret:after {
+  border-bottom: 3px solid #808080;
+  top: -4px;
+  right: -4px;
+}
+
+button.sort .caret {
+  display: none;
+}
+
+button.sort.asc .caret,
+button.sort.desc .caret {
+  display: inline-block;
+}
+
+/* Table footer */
+.table-footer {
+  background-color: #fff;
+  margin-top: -1px;
+  position: relative;
+  z-index: -1;
+}
+
+/* Table pagination */
+.table-pagination {
+  white-space: nowrap;
+}
+
+.table-pagination:after {
+  display: block;
+  content: "";
+  clear: both;
+}
+
+.jPaginateBack,
+.jPaginateNext,
+.table-list-container .pagination {
+  float: left;
+}
+
+.jPaginateBack,
+.jPaginateNext {
+  line-height: 1.75rem;
+  width: 1.75rem;
+  text-align: center;
+  user-select: none;
+}
+
+.jPaginateBack .material-icons,
+.jPaginateNext .material-icons {
+  display: block;
+  font-size: 16px;
+  line-height: inherit;
+}
+
+.delete-button {
+  border-radius: 20px; /* Adjust border-radius */
+  border: 2px solid black; /* Black border */
+  background-color: transparent; /* Transparent background */
+  color: black; /* Text color */
+  font-size: 14px; /* Font size */
+  cursor: pointer; /* Cursor style */
+  padding: 10px 20px; /* Adjust padding */
+  outline: none; /* Removes default focus outline */
+}
+h1 { color: #243b55; font-family: 'Trocchi', serif; font-size: 45px; font-weight: normal; line-height: 48px; margin: 0;  text-align:center;}
+
+
+      
+.delete-button:hover {
+  background-color: black; /* Background color on hover */
+  color: white; /* Text color on hover */
+}
+
+
+</style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+
+      <a class="navbar-brand" href="#">MyTown</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Profile</a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link" href=""> My Reports </a>
+          </li>
+          <li class="nav-item">
+             <a class="nav-link" href="{% url 'addreports' %}">Add Report</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contact us</a>
+           
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Log out</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+</nav>
+
+<hr>
+
+<div id="tableID" class="table-list-container">
+        <h1>  My Reports </h1>
+
+    <table class="table-list" data-currentpage="1" style="height:268px;">
+        <thead>
+            <th><button type="button" class="sort" data-sort="timestamp">Date<i class="caret"></i></button></th>
+            <th><button type="button" class="sort" data-sort="jSortNumber">#<i class="caret"></i></button></th>
+            <th><button type="button" class="sort" data-sort="jSortTitle">Title <i class="caret"></i></button></th>
+            <th><button type="button" class="sort" data-sort="jSortcity">neighborhood<i class="caret"></i></button></th>
+            <th><button type="button" class="sort" data-sort="jSortfacility">facility<i class="caret"></i></button></th>
+            <th><button type="button" class="sort" data-sort="jSortDescription">Description <i class="caret"></i></button></th>
+            <th><button type="button" class="sort" data-sort="jSortLocation">Location <i class="caret"></i></button></th>
+            <th><button type="button" class="sort" data-sort="jSortPhoto">Photo <i class="caret"></i></button></th>
+            <th><button type="button" class="sort" data-sort="jSortdelete">Update <i class="caret"></i></button></th>
+            <th><button type="button" class="sort" data-sort="jSortdelete">Delete <i class="caret"></i></button></th>
+
+        </thead>
+        <tbody class="list">
+            {% for report in reports %}
+            <tr>
+                <td>{{ report.timestamp }}</td>
+                <td>{{ forloop.number }}</td>
+               <td>{{ report.title }}</td>
+                <td>{{ report.neighborhood }}</td>
+               <td>{{ report.facility }}</td>
+                <td>{{ report.description }}</td>
+                <td>{{ report.location }}</td>
+                <td>{{ report.photo }}</td>
+               <td class="update-column">
+        <a class="btn btn-outline-secondary btn-sm" href="{% url 'updatereport' report.id %}">Update</a>
+             </td>
+               <td class="delete-column">
+        <a class="btn btn-outline-danger btn-sm" href="{% url 'delete' report.id %}">Delete</a>
+             </td>
+            </tr>
+             {% comment %} <td class="update-column">
+        <a class="btn btn-outline-secondary btn-sm" href="{% url 'update' report.id %}">Update</a>
+             </td>
+            </tr> {% endcomment %}
+            {% endfor %}
+        </tbody>
+    </table>
+    <table class="table-footer">
+        <tr>
+            {% comment %} <td class="table-pagination">
+                <button type="button" class="jPaginateBack"><i class="material-icons keyboard_arrow_left">&#xe314;</i></button>
+                <ul class="pagination"></ul>
+                <button type="button" class="jPaginateNext"><i class="material-icons keyboard_arrow_right">&#xe315;</i></button>
+            </td> {% endcomment %}
+        </tr>
+    </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-7nxMmcvLlRViJj7zBBk9p3iQ+Oe1xsqE7JzRGz2u7WfI1K3AyHP8JLQiTzokXWf1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-YVxATVowH9W+VjPTj6qQVJo9wXO+7Nz0X1/1+CtTfn+EaTob/p1Bg3g27pJuvQuE" crossorigin="anonymous"></script>
+
+<script>
+
+function confirmDelete() {
+    var confirmation = confirm("Are you sure you want to delete this report?\n\nThis action cannot be undone. All data associated with this report will be permanently removed from the system.");
+    if (confirmation) {
+        // If user confirms, proceed with the deletion process
+        // You can implement the deletion logic here
+        alert("Report deleted successfully.");
+    } else {
+        // If user cancels, do nothing
+        alert("Deletion canceled.");
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Populate the date column with the current date
+    const currentDate = new Date().toLocaleDateString('en-US');
+    const dateCells = document.querySelectorAll('.table-list tbody tr td:nth-child(1)');
+    dateCells.forEach(cell => {
+        cell.textContent = currentDate;
+    });
+
+    // Assign a unique report number to each report
+    const reportRows = document.querySelectorAll('.table-list tbody tr');
+    reportRows.forEach((row, index) => {
+        const reportNumberCell = row.querySelector('td:nth-child(2)');
+        reportNumberCell.textContent = index + 1;
+    });
+
+   
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reports list</title>
+<style>
+
+html {
+  height: 100%;
+}
+    body {
+      font-family: sans-serif;
+      background: linear-gradient(#141e30, #243b55);
+    }
+.table-container {
+  overflow-x: auto;
+}
+
+h1 { 
+  color: #243b55; 
+  font-family: 'Trocchi', serif; 
+  font-size: 45px; 
+  font-weight: normal; 
+  line-height: 48px; 
+  margin: 0;  
+  text-align:center;
+}
+
+.table-list-container {
+  max-width: 90%; /* Adjust the maximum width of the table container */
+  margin: 20px auto;
+  background-color: #ffffff;
+  border: 1px solid #d2d2d2;
+  position: relative;
+  z-index: 0;
+  overflow-x: auto;
+}
+
+.table-list {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; 
+}
+
+.table-list th, .table-list td {
+  padding: 10px;
+  text-align: left;
+}
+
+@media (max-width: 640px) {
+  .table-list-container {
+    border-width: 1px 0;
+  }
+}
+
+.table-list {
+  min-height: 176px;
+}
+
+.table-list th {
+  border-bottom: 1px solid #d2d2d2;
+}
+table {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.table-list td {
+  height: 1.75rem;
+  vertical-align: top;
+  padding: 10px;
+  border-bottom: 1px solid #d2d2d2;
+  overflow-wrap: break-word;
+}
+h1 { color: #243b55; font-family: 'Trocchi', serif; font-size: 45px; font-weight: normal; line-height: 48px; margin: 0;  text-align:center;}
+
+.table-list tr:last-child td {
+  height: auto;
+}
+
+/* Sort styles */
+th button.sort {
+  text-align: left;
+  padding: 0 10px;
+  line-height: 1.75rem;
+  border: none;
+  background: none;
+  display: block;
+  width: 100%;
+  font-size: 12px;
+  color: #888;
+  border-bottom: 1px solid transparent;
+}
+
+th button.sort.textcenter,
+th button.sort.text-center {
+  text-align: center;
+}
+
+th button.sort.textright,
+th button.sort.text-right {
+  text-align: right;
+}
+
+button.sort .bullet {
+  margin-top: 13px;
+}
+
+/* Sorting caret */
+.table-list .caret:after {
+  content: "";
+}
+
+.table-list thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #fff;
+}
+
+.long-sentence-column {
+  max-width: 200px; /* Adjust the width as needed */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+.asc .caret:after,
+.desc .caret:after {
+  width: 0;
+  height: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  content: "";
+  position: relative;
+  font-size: 0;
+}
+
+.asc .caret:after {
+  border-top: 3px solid #808080;
+  top: -3px;
+  right: -4px;
+}
+
+.desc .caret:after {
+  border-bottom: 3px solid #808080;
+  top: -4px;
+  right: -4px;
+}
+
+button.sort .caret {
+  display: none;
+}
+
+button.sort.asc .caret,
+button.sort.desc .caret {
+  display: inline-block;
+}
+
+/* Table footer */
+.table-footer {
+  background-color: #fff;
+  margin-top: -1px;
+  position: relative;
+  z-index: -1;
+}
+
+.table-search {
+  width: 310px;
+  border-left: 1px solid #d2d2d2;
+}
+
+.table-search .search {
+  width: 100%;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* Table pagination */
+.table-pagination {
+  white-space: nowrap;
+}
+
+.table-pagination:after {
+  display: block;
+  content: "";
+  clear: both;
+}
+
+.jPaginateBack,
+.jPaginateNext,
+.table-list-container .pagination {
+  float: left;
+}
+.table-container {
+    overflow-x: auto; /* or overflow-x: hidden; to hide horizontal overflow */
+}
+
+.table-container table {
+    width: 100%;
+    /* Add any other styling you need for the table */
+}
+
+.jPaginateBack,
+.jPaginateNext {
+  line-height: 1.75rem;
+  width: 1.75rem;
+  text-align: center;
+  user-select: none;
+}
+
+.jPaginateBack .material-icons,
+.jPaginateNext .material-icons {
+  display: block;
+  font-size: 16px;
+  line-height: inherit;
+}
+
+/* Custom check button */
+.check-button {
+  cursor: pointer;
+}
+h1 {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+.check-button:before {
+  content: '\2713'; /* Checkmark symbol */
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.check-button.checked:before {
+  content: '\2714'; /* Heavy checkmark symbol */
+}
+.table-search {
+    position: relative;
+    margin-bottom: 20px; /* Add some space below the search box */
+}
+
+.search {
+    padding: 10px;
+    width: 300px;
+    border: 2px solid #007bff; /* Change border thickness and color */
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s; /* Add transition for smooth effect */
+    outline: 2px solid transparent; /* Add transparent outline */
+}
+
+.search:focus {
+    outline: 2px solid #0056b3; /* Change outline color when focused */
+    border-color: #0056b3;
+}
+</style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="#">MyTown</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+             <a class="nav-link" href="{% url 'managerreports' %}">Reports list</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Send messages</a>
+          </li>
+           {% comment %} <li class="nav-item"> {% endcomment %}
+            {% comment %} <a class="nav-link" href="{% url 'workers_list' %}">Workers list</a> {% endcomment %}
+          {% comment %} </li> {% endcomment %}
+          <li class="nav-item">
+            <a class="nav-link" href="#">Log out</a>
+          </li>
+          <li class="nav-item">
+            {% comment %} <a class="nav-link" href="#">Contact us</a> {% endcomment %}
+          </li>
+        </ul>
+      </div>
+    </div>
+</nav>
+
+<hr>
+
+<div id="tableID" class="table-list-container">
+    <h1> Reports List </h1>
+
+    <div class="table-search">
+        <input class="search" placeholder="Search by neighborhood">
+    </div>
+    <table class="table-list" data-currentpage="1" style="height:268px;">
+        <thead>
+            <th><button type="button" class="sort" data-sort="timestamp">Date<i class="caret"></i></button></th>
+            <th><button type="button" class="sort" data-sort="jSortNumber">#<i class="caret"></i></button></th>
+            <th><button type="button" class="sort" data-sort="jSortTitle">Title <i class="caret"></i></button></th>
+            <th><button type="button" class="sort" data-sort="jSortcity">neighborhood<i class="caret"></i></button></th>
+             <th><button type="button" class="sort" data-sort="jSortfacility">facility<i class="caret"></i></button></th>
+            <th><button type="button" class="sort" data-sort="jSortDescription">Description <i class="caret"></i></button></th>
+            <th><button type="button" class="sort" data-sort="jSortLocation">Location <i class="caret"></i></button></th>
+            <th><button type="button" class="sort" data-sort="jSortPhoto">Photo <i class="caret"></i></button></th>
+        </thead>
+        <tbody class="list">
+            {% for report in reports %}
+            <tr>
+                <td>{{ report.timestamp }}</td>
+                <td>{{ forloop.number }}</td>
+               <td>{{ report.title }}</td>
+                <td>{{ report.neighborhood }}</td>
+                <td>{{ report.facility }}</td>
+                <td>{{ report.description }}</td>
+                <td>{{ report.location }}</td>
+                <td>{{ report.photo }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table class="table-footer">
+        <tr>
+            {% comment %} <td class="table-pagination"> {% endcomment %}
+                {% comment %} <button type="button" class="jPaginateBack"><i class="material-icons keyboard_arrow_left">&#xe314;</i></button>
+                <ul class="pagination"></ul>
+                <button type="button" class="jPaginateNext"><i class="material-icons keyboard_arrow_right">&#xe315;</i></button>
+            </td>
+            <td></td>
+            <td class="table-search">
+                <input class="search" placeholder="Search by neighborhood">
+            </td> {% endcomment %}
+        </tr>
+    </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-7nxMmcvLlRViJj7zBBk9p3iQ+Oe1xsqE7JzRGz2u7WfI1K3AyHP8JLQiTzokXWf1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-YVxATVowH9W+VjPTj6qQVJo9wXO+7Nz0X1/1+CtTfn+EaTob/p1Bg3g27pJuvQuE" crossorigin="anonymous"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Populate the date column with the current date
+    const currentDate = new Date().toLocaleDateString('en-US');
+    const dateCells = document.querySelectorAll('.table-list tbody tr td:nth-child(1)');
+    dateCells.forEach(cell => {
+        cell.textContent = currentDate;
+    });
+
+    // Assign a unique report number to each report
+    const reportRows = document.querySelectorAll('.table-list tbody tr');
+    reportRows.forEach((row, index) => {
+        const reportNumberCell = row.querySelector('td:nth-child(2)');
+        reportNumberCell.textContent = index + 1;
+    });
+
+  
+    
+    // Search functionality
+    const searchInput = document.querySelector('.search');
+    const rows = document.querySelectorAll('.table-list tbody tr');
+
+    searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase().trim();
+
+        rows.forEach(row => {
+            const cityCell = row.querySelector('td:nth-child(4)'); // Adjust the index as needed for the city column
+            const cityText = cityCell.textContent.toLowerCase().trim();
+
+            if (cityText.includes(searchTerm)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
+</body>
+</html>
