@@ -34,11 +34,12 @@
 
     /* Define CSS custom properties for colors */
     :root {
-      --signup-color: #38edfa;
-      --signup-hover: #38edfa; /* Adjusted hover color */
-      --signin-color: #38edfa;
-      --signin-hover: #38edfa; /* Adjusted hover color */
-     
+      --Manager-color: #7c36a8;
+      --Manager-hover: #38edfa; /* Adjusted hover color */
+      --Worker-color: #7c36a8;
+      --Worker-hover: #38edfa; /* Adjusted hover color */
+      --Citizen-color: #7c36a8;
+      --Citizen-hover: #38edfa; /* Adjusted hover color */
     }
     
     /* Define button styles */
@@ -54,17 +55,20 @@
     }
 
     /* Apply specific styles to each button */
-    .signup {
-      --color: var(--signup-color);
-      --hover: var(--signup-hover);
+    .Manager {
+      --color: var(--Manager-color);
+      --hover: var(--Manager-hover);
     }
 
-    .signin {
-      --color: var(--signin-color);
-      --hover: var(--signin-hover);
+    .Worker {
+      --color: var(--Worker-color);
+      --hover: var(--Worker-hover);
     }
 
- 
+    .Citizen {
+      --color: var(--Citizen-color);
+      --hover: var(--Citizen-hover);
+    }
 
     /* Hover effect on buttons */
     button:hover,
@@ -77,15 +81,15 @@
 <body>
   <div class="container">
     <div class="buttons">
-        <h1 style="color: #fdfcfc; font-family: Arial, sans-serif;">Choose To</h1>
+        <h1 style="color: #fdfcfc; font-family: Arial, sans-serif;">log in as</h1>
 
         <!-- <h1 class="blue-text">Choose your role:</h1> -->
-        <button class="signup" onclick="window.location.href='/signup'" style="margin-right: 10px;">Sign up</button>
-      <button class="signin" onclick="window.location.href='/signin'" style="margin-right: 10px;">sign In</button>
+        <button class="Manager" onclick="window.location.href='/managerSignIn'" style="margin-right: 10px;">Manager</button>
+      <button class="Worker" onclick="window.location.href='/workerHomePage'" style="margin-right: 10px;">Worker</button>
+      <button class="Citizen" onclick="window.location.href='/index'" style="margin-right: 10px;">Citizen</button>
     </div>
   </div>
 </body>
 </html>
-
 
 

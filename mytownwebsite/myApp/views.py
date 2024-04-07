@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 from telnetlib import LOGOUT
+LOGOUT = b'logout'
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -11,7 +12,7 @@ from django.contrib.auth import authenticate,login
 
 
 def home(request):
-    return render(request,"mytown/index.html" )
+    return render(request,"mytown/HomePage.html" )
 
 def citizenHomePage(request):
     return render(request,"mytown/citizenHomePage.html" )
@@ -40,28 +41,81 @@ def signup(request):
             return redirect('signup')
     return render(request, "mytown/signup.html")
 
+
+
+from django.contrib.auth import authenticate, login
+
 def signin(request):
     if request.method == 'POST':
-        username=request.POST['username']
-        pass1=request.POST['pass1']
-        user=authenticate(username=username, password=pass1 )
-        if user is not None:
+        username = request.POST['username']
+        pass1 = request.POST['pass1']
+        
+        # Check if the entered credentials match the manager's credentials
+        if username == 'admin1' and pass1 == '12345':
+            # Directly log in the manager
+            user = User.objects.get(username='admin1')
             login(request, user)
-            fname = user.first_name 
+            return redirect('managerHomePage')
+        
+        # If not manager's credentials, proceed with normal authentication
+        user = authenticate(username=username, password=pass1)
+        
+        if user is not None:
+            # If authentication is successful, log in the user
+            login(request, user)
+            # Redirect to the client's homepage
             return redirect('HomeClient')
-            
         else:
             messages.error(request, "Bad Credentials!")
             return redirect('home')
-    return render(request,"mytown/signin.html" )
+    return render(request, "mytown/signin.html")
 
-def signout(request):
-    LOGOUT(request)
-    messages.SUCCESS(request,"logged out successfully!")
-    return redirect('home')
+def logout_request(request):
+    response = LOGOUT  # Assign the logout variable to response
+    messages.info(request, "Logged out successfully!")
+    return redirect("HomePage")
+# def logout_request(request):
+#     logout(request)
+#     messages.info(request, "Logged out successfully!")
+#     return redirect("signin")
 
 
-def homepage(request):
-    return render(request,"homepage" )
+
+
+def HomePage(request):
+    return render(request,"mytown/HomePage.html" )
 def HomeClient(request):
     return render(request,"mytown/HomeClient.html" )
+def managerHomePage(request):
+    return render(request,"mytown/managerHomePage.html" )
+
+def managerSignIn(request):
+    return render(request,"mytown/managerSignIn.html" )
+def workerHomePage(request):
+    return render(request,"mytown/workerHomePage.html" )
+
+def index(request):
+    return render(request,"mytown/index.html" )
+
+# def sign_out(request):
+#     LOGOUT(request)
+#     return redirect('home')
+
+
+
+
+
+# def signin(request):
+#     if request.method == 'POST':
+#         username=request.POST['username']
+#         pass1=request.POST['pass1']
+#         user=authenticate(username=username, password=pass1 )
+#         if user is not None:
+#             login(request, user)
+#             fname = user.first_name 
+#             return redirect('HomeClient')
+            
+#         else:
+#             messages.error(request, "Bad Credentials!")
+#             return redirect('home')
+#     return render(request,"mytown/signin.html" )

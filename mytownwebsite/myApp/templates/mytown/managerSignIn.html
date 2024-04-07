@@ -1,81 +1,128 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Enter Your Details</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0; /* Set background color */
-    margin: 0;
-    padding: 0;
-  }
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Worker Login</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+        background: linear-gradient(#141e30, #243b55);
+      }
 
-  .container {
-    background-color: white; /* Set background color for container */
-    width: 300px; /* Set width */
-    margin: 50px auto; /* Center align and provide spacing */
-    padding: 20px; /* Add some padding */
-    border-radius: 5px; /* Add border radius for rounded corners */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-  }
+      .login-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 400px;
+        padding: 40px;
+        transform: translate(-50%, -50%);
+        background: #ffffff; /* White background */
+        box-shadow: 0 15px 25px rgba(0,0,0,.6);
+        border-radius: 10px;
+        text-align: center; /* Center text inside login box */
+      }
 
-  h3 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
+      h3 {
+        text-align: center;
+        color: #333333;
+        font-size: 25px;
+        margin-bottom: 30px; /* Add margin below the heading */
+      }
 
-  input[type="text"],
-  input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    box-sizing: border-box; /* Ensure padding and border are included in the width */
-  }
+      form {
+        display: flex;
+        flex-direction: column;
+      }
 
-  button {
-    width: 100%;
-    padding: 10px;
-    background-color: #243b55;
-    color: white;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-  }
-  
-  
-  html {
-      height: 100%;
-    }
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: sans-serif;
-      background: linear-gradient(#fff, #243b55);
-    }
+      label {
+        margin-bottom: 10px; /* Adjust margin below the label */
+        color: #333333;
+        border-radius: 5px;
+        display: inline-block; /* Ensure label and input are on the same line */
+        text-align: left; /* Align label text to the left */
+      }
 
-  button:hover {
-    background-color: #0056b3; /* Darker shade on hover */
-  }
-</style>
-</head>
-<body>
+      input {
+        width: calc(100% - 20px); /* Adjust input width */
+        padding: 8px;
+        margin-bottom: 20px;
+        border: 1px solid #cccccc;
+        border-radius: 20px;
+        box-sizing: border-box;
+      }
 
-<div class="container">
-  <h3>Enter Your Details</h3>
-  <form>
-    <label for="username">Username</label>
-    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+      button {
+        background-color: #243b55;
+        color: #ffffff;
+        padding: 8px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+      }
 
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      .button-group {
+        margin-top: 20px; /* Add margin above the button */
+      }
 
-    <button type="submit">Submit</button>
-  </form>
-</div>
+      .button-group button {
+        width: 100%;
+        padding: 10px;
+        background-color: #243b55;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
 
-</body>
+      .button-group button:hover {
+        background-color: #243b55;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <!-- Added container div -->
+      <h3>Sign Up</h3>
+
+      <form action="/signin/" method="post">
+        {% csrf_token %}
+        <label for="">Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Enter user name"
+          required
+        />
+        <br />
+
+        <label for="">Password</label>
+        <input
+          type="password"
+          id="pass1"
+          name="pass1"
+          placeholder="Enter your password"
+          required
+        />
+        <br />
+
+        <button onclick="signUpSubmit" type="submit">Sign In</button>
+
+    
+      </form>
+    </div>
+
+    <script src="" async defer></script>
+    <script>
+      $(".message a").click(function () {
+        $("form").animate({ height: "toggle", opacity: "toggle" }, "slow");
+      });
+    </script>
+  </body>
 </html>
