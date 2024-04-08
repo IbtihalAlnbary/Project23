@@ -150,24 +150,6 @@ def workerlogin(request):
 
 def addreports(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        pass1 = request.POST['pass1']
-        
-        # Check if the entered credentials match the manager's credentials
-        if username == 'admin1' and pass1 == '12345':
-            # Directly log in the manager
-            user = User.objects.get(username='admin1')
-            login(request, user)
-            return redirect('managerHomePage')
-        
-        # If not manager's credentials, proceed with normal authentication
-        user = authenticate(username=username, password=pass1)
-        
-        if user is not None:
-            # If authentication is successful, log in the user
-            login(request, user)
-            # Redirect to the client's homepage
-            return redirect('HomeClient')
         title = request.POST.get('title', '')
         neighborhood = request.POST.get('neighborhood', '')
         facility = request.POST.get('facility', '')  # Corrected field name to lowercase 'facility'
@@ -242,6 +224,53 @@ def updatereport(request, id):
     else:
         form = AddReportForm(instance=report)
     return render(request, 'mytown/editreport.html', {'form':form})
-        
 
+def contactus(request):
+    if request.method=="POST":
+        contactus=contactus()
+        name=request.POST.get('name')
+        email=request.POST.get('email')
+        Description=request.POST.get('Description')
+        contactus.name=name
+        contactus.email=email
+        contactus.Description=Description
+        contactus.save()
+        return HttpResponse("<h1> THANKS FOR CONTACT US</h1>")
+    return render(request,'mytown/contactus.html')
+
+def managermessageworker(request):
+    if request.method=="POST":
+        messageworker=messageworker()
+        name=request.POST.get('name')
+        message=request.POST.get('message')
+        messageworker.name=name
+        messageworker.message=message
+        messageworker.save()
+        return HttpResponse("<h1> THANK YOU FOR YOUR MESSAGE</h1>")
+    return render(request,'mytown/managermessageworker.html')
+
+def managerHomePage(request):
+    return render(request,'managerHomePage.html')
+
+def Deletecitizen(request):
+    return render(request,'Deletecitizen.html')
+
+def deleteworker(request):
+    return render(request,'mytown/deleteworker.html')
+
+def workermessagemanager(request):
+    return render(request,'workermessagemanager.html')
+
+def workerFinish(request):
+    return render(request,'workerFinish.html')
+
+        
+def managermessagecitizen (request):
+    return render(request,'mytown/managermessagecitizen.html')
+
+def citizenmessageworker (request):
+    return render(request,'mytown/citizenmessageworker.html')
+
+def workermessagecitizen (request):
+    return render(request,'mytown/workermessagecitizen.html')
 

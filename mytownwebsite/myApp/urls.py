@@ -19,7 +19,7 @@ from . import views
 # ]
 
 urlpatterns = [
-    path('', views.home, name="home"),
+    # path('', views.home, name="home"),
     path('signup/', views.signup, name="signup"),
     path('signin/', views.signin, name="signin"),
     # path('signout/', views.signout, name="signout"),
@@ -43,4 +43,15 @@ urlpatterns = [
     # path('Reports/', views.check_reports, name='ckeck_reports'),
      path('', views.home1, name='home'),
     path('loginform/', views.loginform, name='loginform'),
+
+     path('contactus/',views.contactus,name='contactus'),
+    path('Deletecitizen/',views.Deletecitizen,name='Deletecitizen'),
+    path('deletewworker/',views.deleteworker,name='deleteworker'),
+    path('workermessagemanager/',views.workermessagemanager,name='workermessagemanage'),
+    path('managermessageworker/',views.managermessageworker,name='managermessageworker'),
+    path('citizenmessageworker/',views.citizenmessageworker,name='citizenmessageworker'),
+    path('workerFinis/h',views.workerFinish,name='workerFinish'),
+    path('workermessagecitizen/',views.workermessagecitizen,name='workermessagecitizen'),
+    path('managermessagecitizen/',views.managermessagecitizen,name='managermessagecitizen'),
+    # path('',views.managerHomePage,name='managerHomePage'),
 ]
