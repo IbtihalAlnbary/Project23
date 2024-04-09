@@ -34,6 +34,8 @@ def home(request):
 def citizenHomePage(request):
     return render(request,"mytown/citizenHomePage.html" )
 
+def addWorker(request):
+    return render(request,"mytown/addWorker.html" )
 
 
 def signup(request):
@@ -67,12 +69,20 @@ def signin(request):
         username = request.POST['username']
         pass1 = request.POST['pass1']
         
+        if username == 'Worker':
+            # Directly log in the manager
+            user = User.objects.get(username='Worker')
+            login(request, user)
+            return redirect('reportlists')
+        
+
+   
         # Check if the entered credentials match the manager's credentials
         if username == 'admin1' and pass1 == '12345':
             # Directly log in the manager
             user = User.objects.get(username='admin1')
             login(request, user)
-            return redirect('managerHomePage')
+            return redirect('managerreports')
         
         # If not manager's credentials, proceed with normal authentication
         user = authenticate(username=username, password=pass1)
@@ -81,7 +91,7 @@ def signin(request):
             # If authentication is successful, log in the user
             login(request, user)
             # Redirect to the client's homepage
-            return redirect('HomeClient')
+            return redirect('citezinreports')
         else:
             messages.error(request, "Bad Credentials!")
             return redirect('home')
@@ -90,7 +100,7 @@ def signin(request):
 def logout_request(request):
     response = LOGOUT  # Assign the logout variable to response
     messages.info(request, "Logged out successfully!")
-    return redirect("HomePage")
+    return redirect("home")
 # def logout_request(request):
 #     logout(request)
 #     messages.info(request, "Logged out successfully!")
@@ -130,6 +140,12 @@ def workerlogin(request):
     if request.method == "POST":
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
+
+        if username == 'Worker':
+            # Directly log in the manager
+            user = User.objects.get(username='Worker')
+            login(request, user)
+            return redirect('reportlists')
         
         # Hash the password securely
         hashed_password = make_password(password)
@@ -150,24 +166,7 @@ def workerlogin(request):
 
 def addreports(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        pass1 = request.POST['pass1']
-        
-        # Check if the entered credentials match the manager's credentials
-        if username == 'admin1' and pass1 == '12345':
-            # Directly log in the manager
-            user = User.objects.get(username='admin1')
-            login(request, user)
-            return redirect('managerHomePage')
-        
-        # If not manager's credentials, proceed with normal authentication
-        user = authenticate(username=username, password=pass1)
-        
-        if user is not None:
-            # If authentication is successful, log in the user
-            login(request, user)
-            # Redirect to the client's homepage
-            return redirect('HomeClient')
+
         title = request.POST.get('title', '')
         neighborhood = request.POST.get('neighborhood', '')
         facility = request.POST.get('facility', '')  # Corrected field name to lowercase 'facility'
