@@ -1,8 +1,8 @@
 from django.contrib import admin
 from .models import AddReport
-from .models import AddReport, AssignedReport, Workerlogin, citezinreports, ManagerReports, Message, ContactUs,workermessagemanager,workermessagecitizen
+from .models import AddReport, AssignedReport, Workerlogin, ManagerReports, Message, ContactUs,workermessagemanager,workermessagecitizen
 from django.utils import timezone 
-from .models import citezinreports
+from .models import citizinReports
 from django.utils import timezone
 @admin.register(AddReport)
 class AddReportAdmin(admin.ModelAdmin):
@@ -25,7 +25,7 @@ class ManagerReporstAdmin(admin.ModelAdmin):
     list_filter = ('reportnumber','reports')
     search_fields = ('reports__title','reports__description')
 
-@admin.register(citezinreports)
+@admin.register(citizinReports)
 class CitezinReportAdmin(admin.ModelAdmin):
     list_display = ( 'reports', 'reportnumber')
     list_filter = ('reportnumber',)  # Update this line to reference existing fields

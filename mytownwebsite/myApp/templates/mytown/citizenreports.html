@@ -5,6 +5,66 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>citezin reports</title>
 <style>
+
+
+
+/* sign out style */
+
+
+        /* Style for modal content */
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 400px;
+            padding: 40px;
+            transform: translate(-50%, -50%);
+            background: #ffffff; /* White background */
+            box-shadow: 0 15px 25px rgba(0,0,0,.6);
+            border-radius: 10px;
+            text-align: center; /* Center text inside modal box */
+        }
+
+        /* Style for close button */
+        .close {
+            color: #333333;
+            position: absolute; /* Position relative to parent */
+            top: 5px;
+            right: 5px;
+            font-size: 28px;
+            font-weight: bold;
+            line-height: 16px; /* Adjust line height to center the 'x' */
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Style for logout button */
+        .logout-btn {
+        background-color: transparent;
+        color: #243b55;
+        border: none;
+        cursor: pointer;
+        font-size: 20px;
+        font-family: 'Trocchi', serif;  /* Add the font family here */
+    }
+
+        .logout-btn:hover {
+            color: #fc0303; /* Fixed color */
+        }
+
+        /* Style for icon inside the logout button */
+        .logout-icon {
+            color: rgb(255, 255, 255); /* Blue color for the icon */
+        }
+
+
+
+
 html {
   height: 100%;
 }
@@ -233,9 +293,14 @@ h1 { color: #243b55; font-family: 'Trocchi', serif; font-size: 45px; font-weight
             <a class="nav-link" href="{% url 'contactus' %}">Contact us </a>
            
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" href="#">Log out</a>
+          </li> -->
+          <li class="nav-item">
+            <button class="logout-btn" onclick="openModal()">Logout</button>
           </li>
+
+
         </ul>
       </div>
     </div>
@@ -261,7 +326,7 @@ h1 { color: #243b55; font-family: 'Trocchi', serif; font-size: 45px; font-weight
 
         </thead>
         <tbody class="list">
-            {% for report in reports %}
+            {% for report in user_reports %}
             <tr>
                 <td>{{ report.timestamp }}</td>
                 <td>{{ forloop.number }}</td>
@@ -332,6 +397,30 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 </script>
+
+<!-- The Modal for logout -->
+<div id="myModal" class="modal">
+  <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <p>Are you sure you want to log out?</p>
+      <form id="logoutForm" action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="logout-btn">Logout</button>
+      </form>
+  </div>
+</div>
+
+<!-- Script to open and close the modal -->
+<script>
+  function openModal() {
+      document.getElementById('myModal').style.display = 'block';
+  }
+
+  function closeModal() {
+      document.getElementById('myModal').style.display = 'none';
+  }
+</script>
+
 
 </body>
 </html>

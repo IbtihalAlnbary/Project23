@@ -1,23 +1,11 @@
-<!DOCTYPE html>
+
+        <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logout</title>
-    <!-- Link to Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Logout Modal</title>
     <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: sans-serif;
-            background: linear-gradient(#141e30, #243b55);
-        }
-
         /* Style for modal container */
         .modal {
             display: none; /* Hidden by default */
@@ -84,8 +72,8 @@
     </style>
 </head>
 <body>
-    <!-- Logout icon outside the modal -->
-    <button class="logout-btn" onclick="openModal()"><i class="fas fa-sign-out-alt logout-icon"></i></button>
+    <!-- Logout text button outside the modal -->
+    <button class="logout-btn" onclick="openModal()">Logout</button>
 
     <!-- The Modal -->
     <div id="myModal" class="modal">
@@ -113,7 +101,5 @@
             document.getElementById('myModal').style.display = 'none';
         }
     </script>
-    <!-- Font Awesome script -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
 </body>
 </html>
