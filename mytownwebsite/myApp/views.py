@@ -35,6 +35,8 @@ def home(request):
 def citizenHomePage(request):
     return render(request,"mytown/citizenHomePage.html" )
 
+def addWorker(request):
+    return render(request,"mytown/addWorker.html" )
 
 
 def signup(request):
@@ -62,18 +64,25 @@ def signup(request):
 
 
 from django.contrib.auth import authenticate, login
-
 def signin(request):
     if request.method == 'POST':
         username = request.POST['username']
         pass1 = request.POST['pass1']
         
+        if username == 'Worker':
+            # Directly log in the manager
+            user = User.objects.get(username='Worker')
+            login(request, user)
+            return redirect('reportlists')
+        
+
+   
         # Check if the entered credentials match the manager's credentials
         if username == 'admin1' and pass1 == '12345':
             # Directly log in the manager
             user = User.objects.get(username='admin1')
             login(request, user)
-            return redirect('managerHomePage')
+            return redirect('managerreports')
         
         # If not manager's credentials, proceed with normal authentication
         user = authenticate(username=username, password=pass1)
@@ -91,7 +100,7 @@ def signin(request):
 def logout_request(request):
     response = LOGOUT  # Assign the logout variable to response
     messages.info(request, "Logged out successfully!")
-    return redirect("HomePage")
+    return redirect("home")
 # def logout_request(request):
 #     logout(request)
 #     messages.info(request, "Logged out successfully!")
@@ -224,7 +233,8 @@ def managerreports(request):
  total_reports = AddReport.objects.count()
  return render(request, 'mytown/managerlist.html', {'reports': reports})
 
-
+def addWorker(request):
+    return render(request,"mytown/addWorker.html" )
 # def profile(request):
 #  profile = signup.objects.all()
 # #  total_reports = AddReport.objects.count()

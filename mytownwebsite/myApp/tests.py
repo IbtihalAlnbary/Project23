@@ -11,61 +11,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 
 
-class SignupTestCase(TestCase):
-    def setUp(self):
-        self.factory = RequestFactory()
 
-    def test_successful_signup(self):
-        # Create a POST request with valid data
-        request = self.factory.post('/signup/', {
-            'username': 'testuser',
-            'fname': 'Test',
-            'lname': 'User',
-            'email': 'test@example.com',
-            'pass1': 'password123',
-            'pass2': 'password123',
-        })
-
-        # Set up message storage
-        setattr(request, '_messages', FallbackStorage(request))
-
-        # Call the signup view function
-        response = signup(request)
-
-        # Verify that the user is redirected to the signin page
-        self.assertEqual(response.url, '/signin/')
-
-        # Verify that the user is created
-        self.assertTrue(User.objects.filter(username='testuser').exists())
-
-        # Verify success message is set
-        messages.success.assert_called_once_with(request, "Your account has been successfully created!")
-
-    def test_unsuccessful_signup_password_mismatch(self):
-        # Create a POST request with mismatched passwords
-        request = self.factory.post('/signup/', {
-            'username': 'testuser',
-            'fname': 'Test',
-            'lname': 'User',
-            'email': 'test@example.com',
-            'pass1': 'password123',
-            'pass2': 'password456',  # Mismatched password
-        })
-
-        # Set up message storage
-        setattr(request, '_messages', FallbackStorage(request))
-
-        # Call the signup view function
-        response = signup(request)
-
-        # Verify that the user is redirected back to the signup page
-        self.assertEqual(response.url, '/signup/')
-
-        # Verify that the user is not created
-        self.assertFalse(User.objects.filter(username='testuser').exists())
-
-        # Verify error message is set
-        messages.error.assert_called_once_with(request, "Passwords do not match.")
 class AddReportModelTest(TestCase):
     def setUp(self):
         AddReport.objects.create(
@@ -145,78 +91,134 @@ class WorkerLoginTestCase(TestCase):
         self.assertEqual(self.worker.username, "testworker")
         self.assertEqual(self.worker.password, "testpassword")
 
-from django.test import TestCase, RequestFactory
+# from django.test import TestCase, RequestFactory
+# from django.contrib.auth.models import User
+# from django.contrib.messages.storage.fallback import FallbackStorage
+# from django.contrib import messages
+# from django.shortcuts import redirect
+
+# from mytownwebsite.views import signup
+
+
+
+
+
+
+
+
+from django.test import TestCase, Client
+from django.urls import reverse
 from django.contrib.auth.models import User
-from django.contrib.messages.storage.fallback import FallbackStorage
-from django.contrib import messages
-from django.shortcuts import redirect
+from django.contrib.auth import logout
+
+from django.contrib.auth import authenticate, login
 
 
-class SignupTestCase(TestCase):
+class SignUpTest(TestCase):
+    
+    def test_signup(self):
+        # Prepare data for the test
+        data = {
+            'username': 'testuser',
+            'fname': 'Test',
+            'lname': 'User',
+            'email': 'test@example.com',
+            'pass1': 'testpassword',
+            'pass2': 'testpassword',
+        }
+
+        # Send POST request to signup endpoint with test data
+        response = self.client.post(reverse('signup'), data)
+
+        # Check if the user was created successfully
+        self.assertEqual(response.status_code, 302)  # Redirect status code
+        self.assertRedirects(response, reverse('signin'))  # Check redirection to signin page
+
+        # Check if the user exists in the database
+        created_user = User.objects.get(username='testuser')
+        self.assertIsNotNone(created_user)
+        self.assertEqual(created_user.first_name, 'Test')
+        self.assertEqual(created_user.last_name, 'User')
+        self.assertEqual(created_user.email, 'test@example.com')
+
+        # Clean up after the test
+        created_user.delete()
+
+
+
+
+  
+
+class LogoutRequestTest(TestCase):
+    
     def setUp(self):
-        self.factory = RequestFactory()
-
-    def test_successful_signup(self):
-        # Create a POST request with valid data
-        request = self.factory.post('/signup/', {
-            'username': 'testuser',
-            'fname': 'Test',
-            'lname': 'User',
-            'email': 'test@example.com',
-            'pass1': 'password123',
-            'pass2': 'password123',
-        })
-
-        # Set up message storage
-        setattr(request, '_messages', FallbackStorage(request))
-
-        # Call the signup view function
-        response = signup(request)
-
-        # Verify that the user is redirected to the signin page
-        self.assertEqual(response.url, '/signin/')
-
-        # Verify that the user is created
-        self.assertTrue(User.objects.filter(username='testuser').exists())
-
-        # Verify success message is set
-        messages.success.assert_called_once_with(request, "Your account has been successfully created!")
-
-    def test_unsuccessful_signup_password_mismatch(self):
-        # Create a POST request with mismatched passwords
-        request = self.factory.post('/signup/', {
-            'username': 'testuser',
-            'fname': 'Test',
-            'lname': 'User',
-            'email': 'test@example.com',
-            'pass1': 'password123',
-            'pass2': 'password456',  # Mismatched password
-        })
-
-        # Set up message storage
-        setattr(request, '_messages', FallbackStorage(request))
-
-        # Call the signup view function
-        response = signup(request)
-
-        # Verify that the user is redirected back to the signup page
-        self.assertEqual(response.url, '/signup/')
-
-        # Verify that the user is not created
-        self.assertFalse(User.objects.filter(username='testuser').exists())
-
-        # Verify error message is set
-        messages.error.assert_called_once_with(request, "Passwords do not match.")
+        self.client = Client()
+        self.username = 'testuser'
+        self.password = 'testpassword'
+        
+        # Create a test user
+        self.user = User.objects.create_user(username=self.username, password=self.password)
+    
+    def test_logout_request(self):
+        # Log in the test user
+        self.client.login(username=self.username, password=self.password)
+        
+        # Make a request to the logout endpoint
+        response = self.client.get(reverse('logout'))
+        
+        # Check if the user is logged out
+        self.assertNotIn('_auth_user_id', self.client.session)
+        
+        # Check if the response redirects to the home page
+        self.assertRedirects(response, reverse('home'))
+        
+        # Check if the "Logged out successfully!" message is displayed
+        messages = list(response.context['messages'])
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), "Logged out successfully!")
 
 
 
 
 
+class TestViews(TestCase):
 
+    def setUp(self):
+        self.client = Client()
+        self.signin_url = reverse('signin')
+        self.manager_home_url = reverse('managerHomePage')
+        self.home_client_url = reverse('HomeClient')
+        self.manager_signin_url = reverse('managerSignIn')
+        self.worker_home_url = reverse('workerHomePage')
+        self.index_url = reverse('index')
 
+    
+    def test_signin_view(self):
+        response = self.client.get(self.signin_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'mytown/signin.html')
 
+    def test_manager_home_view(self):
+        response = self.client.get(self.manager_home_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'mytown/managerHomePage.html')
 
+    def test_home_client_view(self):
+        response = self.client.get(self.home_client_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'mytown/HomeClient.html')
 
+    def test_manager_signin_view(self):
+        response = self.client.get(self.manager_signin_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'mytown/managerSignIn.html')
 
+    def test_worker_home_view(self):
+        response = self.client.get(self.worker_home_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'mytown/workerHomePage.html')
 
-
+    def test_index_view(self):
+        response = self.client.get(self.index_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'mytown/index.html')

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Add Worker</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+        background: linear-gradient(#141e30, #243b55);
+      }
+
+      .login-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 400px;
+        padding: 40px;
+        transform: translate(-50%, -50%);
+        background: #ffffff; /* White background */
+        box-shadow: 0 15px 25px rgba(0,0,0,.6);
+        border-radius: 10px;
+        text-align: center; /* Center text inside login box */
+      }
+
+      h3 {
+        text-align: center;
+        color: #333333;
+        font-size: 25px;
+        margin-bottom: 30px; /* Add margin below the heading */
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+
+      label {
+        margin-bottom: 10px; /* Adjust margin below the label */
+        color: #333333;
+        border-radius: 5px;
+        display: inline-block; /* Ensure label and input are on the same line */
+        text-align: left; /* Align label text to the left */
+      }
+
+      input {
+        width: calc(100% - 20px); /* Adjust input width */
+        padding: 8px;
+        margin-bottom: 20px;
+        border: 1px solid #cccccc;
+        border-radius: 20px;
+        box-sizing: border-box;
+      }
+
+      button {
+        background-color: #243b55;
+        color: #ffffff;
+        padding: 8px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+      }
+
+      .button-group {
+        margin-top: 20px; /* Add margin above the button */
+      }
+
+      .button-group button {
+        width: 100%;
+        padding: 10px;
+        background-color: #243b55;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+
+      .button-group button:hover {
+        background-color: #243b55;
+      }
+    </style>
+  </head>
+  <body>
+
+    <button><a href="/managerreports">back</a></button>
+    <div class="login-container">
+      <!-- Added container div -->
+      <h3>Adding Worker</h3>
+
+      <form action="/signin/" method="post">
+        {% csrf_token %}
+        <label for="">Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Enter user name"
+          required
+        />
+        <br />
+
+        <label for="">Password</label>
+        <input
+          type="password"
+          id="pass1"
+          name="pass1"
+          placeholder="Enter your password"
+          required
+        />
+        <br />
+
+        <button onclick="signUpSubmit" type="submit"><a href="/managerreports"></a>Add</button>
+        <!-- <button><a href="/managerlist">back</a></button> -->
+
+
+    
+      </form>
+    </div>
+
+    <script src="" async defer></script>
+    <script>
+      $(".message a").click(function () {
+        $("form").animate({ height: "toggle", opacity: "toggle" }, "slow");
+      });
+    </script>
+  </body>
+</html>
