@@ -251,6 +251,17 @@ def managermessageworker(request):
         return HttpResponse("<h1> THANK YOU FOR YOUR MESSAGE</h1>")
     return render(request,'mytown/managermessageworker.html')
 
+def managermessagecitizen(request):
+    if request.method=="POST":
+        managermessagecitizen=managermessagecitizen()
+        name=request.POST.get('name')
+        message=request.POST.get('message')
+        managermessagecitizen.name=name
+        managermessagecitizen.message=message
+        managermessagecitizen.save()
+        return HttpResponse("<h1> THANK YOU FOR YOUR MESSAGE</h1>")
+    return render(request,'mytown/managermessagecitizen.html')
+
 def managerHomePage(request):
     return render(request,'managerHomePage.html')
 
@@ -309,3 +320,85 @@ def managermessageworker(request):
         form = MessageForm()
     return render(request, 'mytown/managermessageworker.html', {'form': form})
 
+import unittest
+from django.test import Client
+#from myapp.models import MessageWorker  # אני מניח שיש לך מודל בשם MessageWorker
+
+class TestManagerMessageWorkerView(unittest.TestCase):
+    
+    def test_post_request(self):
+        client = Client()
+        response = client.post('/managermessageworker/', {'name': 'John Doe', 'message': 'Test message'})
+        self.assertEqual(response.status_code, 200)  # Assuming the view returns a success response
+
+        # Check if message is saved in the database
+        self.assertTrue(MessageWorker.objects.filter(name='John Doe', message='Test message').exists())
+
+    def test_get_request(self):
+        client = Client()
+        response = client.get('/managermessageworker/')
+        self.assertEqual(response.status_code, 200)  # Assuming the view returns a success response
+
+        # Add more assertions if necessary
+
+if __name__ == '__main__':
+    unittest.main()
+
+def workermessagemanager(request):
+    if request.method=="POST":
+        workermessagemanager=workermessagemanager()
+        name=request.POST.get('name')
+        message=request.POST.get('message')
+        workermessagemanager.name=name
+        workermessagemanager.message=message
+        workermessagemanager.save()
+        return HttpResponse("<h1> THANK YOU FOR YOUR MESSAGE</h1>")
+    return render(request,'mytown/workermessagemanager.html')
+
+def workermessagecitizen(request):
+    if request.method=="POST":
+        workermessagecitizen=workermessagecitizen()
+        name=request.POST.get('name')
+        message=request.POST.get('message')
+        workermessagecitizen.name=name
+        workermessagecitizen.message=message
+        workermessagecitizen.save()
+        return HttpResponse("<h1> THANK YOU FOR YOUR MESSAGE</h1>")
+    return render(request,'mytown/workermessagecitizen.html')
+from django.shortcuts import render
+from django.http import HttpResponse
+
+def delete_worker(request):
+    if request.method == "POST":
+        # Get data from the form
+        worker_name = request.POST.get('workerName')
+        worker_id = request.POST.get('workerID')
+        reason = request.POST.get('reason')
+        
+        # Perform deletion logic here (e.g., delete the worker from the database)
+        # Example:
+        # worker = Worker.objects.get(name=worker_name, id=worker_id)
+        # worker.delete()
+        
+        return HttpResponse("<h1>Worker Deleted Successfully</h1>")
+    
+    # If the request method is not POST, render the delete worker page
+    return render(request, 'mytown/delete_worker.html')
+
+from django.shortcuts import render
+from django.http import HttpResponse
+
+def finish_job(request):
+    if request.method == "POST":
+        # Get data from the form
+        work_place = request.POST.get('workPlace')
+        work_duration = request.POST.get('workDuration')
+        additional_notes = request.POST.get('additionalNotes')
+        
+        # Perform any additional logic here (e.g., save data to the database)
+        
+        # Return a response
+        return HttpResponse("<h1>Job Finished Successfully</h1>")
+    
+    # If the request method is not POST, render the finish job page
+    return render(request, 'mytown/finish_job.html')

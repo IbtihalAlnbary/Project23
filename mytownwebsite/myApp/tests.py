@@ -3,6 +3,7 @@ from .models import AddReport,AssignedReport,citezinreports,Workerlogin
 from datetime import date
 from .models import *
 
+
 from django.test import TestCase, RequestFactory
 from django.contrib.auth.models import User
 from django.contrib.messages.storage.fallback import FallbackStorage
@@ -211,13 +212,174 @@ class SignupTestCase(TestCase):
 
 
 
+import unittest
+from django.test import Client
+
+class TestContactUsView(unittest.TestCase):
+    
+    def test_post_request(self):
+        client = Client()
+        response = client.post('/contactus/', {'name': 'John Doe', 'email': 'john@example.com', 'description': 'Test message'})
+        self.assertEqual(response.status_code, 200)  # Assuming the view returns a success response
+
+        # Add more assertions if necessary
+
+    def test_get_request(self):
+        client = Client()
+        response = client.get('/contactus/')
+        self.assertEqual(response.status_code, 200)  # Assuming the view returns a success response
+
+        # Add more assertions if necessary
+
+if __name__ == '__main__':
+    unittest.main()
+
+
+import unittest
+from django.test import Client
+from myapp.models import ManagerMessageCitizen  # אני מניח שיש לך מודל בשם ManagerMessageCitizen
+
+class TestManagerMessageCitizenView(unittest.TestCase):
+    
+    def test_post_request(self):
+        client = Client()
+        response = client.post('/managermessagecitizen/', {'name': 'John Doe', 'message': 'Test message'})
+        self.assertEqual(response.status_code, 200)  # Assuming the view returns a success response
+
+        # Check if message is saved in the database
+        self.assertTrue(ManagerMessageCitizen.objects.filter(name='John Doe', message='Test message').exists())
+
+    def test_get_request(self):
+        client = Client()
+        response = client.get('/managermessagecitizen/')
+        self.assertEqual(response.status_code, 200)  # Assuming the view returns a success response
+
+        # Add more assertions if necessary
+
+if __name__ == '__main__':
+    unittest.main()
+
+
+import unittest
+from django.test import Client
+from mytownwebsite.models import WorkerMessageManager  # אני מניח שיש לך מודל בשם WorkerMessageManager
+
+class TestWorkerMessageManagerView(unittest.TestCase):
+    
+    def test_post_request(self):
+        client = Client()
+        response = client.post('/workermessagemanager/', {'name': 'John Doe', 'message': 'Test message'})
+        self.assertEqual(response.status_code, 200)  # Assuming the view returns a success response
+
+        # Check if message is saved in the database
+        self.assertTrue(WorkerMessageManager.objects.filter(name='John Doe', message='Test message').exists())
+
+    def test_get_request(self):
+        client = Client()
+        response = client.get('/workermessagemanager/')
+        self.assertEqual(response.status_code, 200)  # Assuming the view returns a success response
+
+        # Add more assertions if necessary
+
+if __name__ == '__main__':
+    unittest.main()
 
 
 
+import unittest
+from django.test import Client
+from mytownwebsite.models import WorkerMessageCitizen  # אני מניח שיש לך מודל בשם WorkerMessageCitizen
 
+class TestWorkerMessageCitizenView(unittest.TestCase):
+    
+    def test_post_request(self):
+        client = Client()
+        response = client.post('/workermessagecitizen/', {'name': 'John Doe', 'message': 'Test message'})
+        self.assertEqual(response.status_code, 200)  # Assuming the view returns a success response
 
+        # Check if message is saved in the database
+        self.assertTrue(WorkerMessageCitizen.objects.filter(name='John Doe', message='Test message').exists())
 
+    def test_get_request(self):
+        client = Client()
+        response = client.get('/workermessagecitizen/')
+        self.assertEqual(response.status_code, 200)  # Assuming the view returns a success response
 
+        # Add more assertions if necessary
 
+if __name__ == '__main__':
+    unittest.main()
 
+import unittest
+from django.test import Client
+from django.urls import reverse
+from mytownwebsite.models import Worker  # אני מניח שיש לך מודל בשם Worker
 
+class TestDeleteWorkerView(unittest.TestCase):
+
+    def test_post_request(self):
+        # Create a test worker
+        test_worker = Worker.objects.create(name='Test Worker', id=12345)
+
+        # Create a client
+        client = Client()
+
+        # Prepare data for POST request
+        data = {
+            'workerName': 'Test Worker',
+            'workerID': 12345,
+            'reason': 'Test reason for deletion'
+        }
+
+        # Send POST request to delete worker
+        response = client.post(reverse('delete_worker'), data)
+
+        # Check if worker is deleted from the database
+        self.assertFalse(Worker.objects.filter(name='Test Worker', id=12345).exists())
+
+        # Check if response status code is 200 (OK)
+        self.assertEqual(response.status_code, 200)
+
+        # Check if response contains success message
+        self.assertIn(b'Worker Deleted Successfully', response.content)
+
+    def test_get_request(self):
+        # Create a client
+        client = Client()
+
+        # Send GET request to delete worker page
+        response = client.get(reverse('delete_worker'))
+
+        # Check if response status code is 200 (OK)
+        self.assertEqual(response.status_code, 200)
+
+        # Add more assertions if necessary
+
+if __name__ == '__main__':
+    unittest.main()
+from django.test import TestCase, Client
+from django.urls import reverse
+
+class FinishJobTestCase(TestCase):
+    def test_post_request(self):
+        client = Client()
+        # Prepare data for POST request
+        data = {
+            'workPlace': 'Office',
+            'workDuration': '8 hours',
+            'additionalNotes': 'Completed tasks A, B, and C.'
+        }
+        # Send POST request
+        response = client.post(reverse('finish_job'), data)
+        # Check if the response is successful (status code 200)
+        self.assertEqual(response.status_code, 200)
+        # Check if the response contains the success message
+        self.assertIn(b'Job Finished Successfully', response.content)
+
+    def test_get_request(self):
+        client = Client()
+        # Send GET request
+        response = client.get(reverse('finish_job'))
+        # Check if the response is successful (status code 200)
+        self.assertEqual(response.status_code, 200)
+        # Add more assertions if necessary
