@@ -261,7 +261,7 @@ h1 { color: #243b55; font-family: 'Trocchi', serif; font-size: 45px; font-weight
 
         </thead>
         <tbody class="list">
-            {% for report in reports %}
+            {% for report in user_reports %}
             <tr>
                 <td>{{ report.timestamp }}</td>
                 <td>{{ forloop.number }}</td>

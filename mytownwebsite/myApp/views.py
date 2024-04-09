@@ -5,6 +5,7 @@ from django.http import HttpResponse
 
 from django.contrib.auth.hashers import make_password  # Import make_password for password hashing
 from django.db.models import F
+from django.contrib.auth.hashers import check_password
 
 from django.contrib.auth.models import User 
 from django.contrib import messages
@@ -18,7 +19,7 @@ from.Form import AddReportForm
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from .models import ManagerReports
-from .models import citezinreports
+from .models import citizinReports
 from .models import Workerlogin
 # 
 from django.shortcuts import render, get_object_or_404
@@ -81,7 +82,7 @@ def signin(request):
             # If authentication is successful, log in the user
             login(request, user)
             # Redirect to the client's homepage
-            return redirect('HomeClient')
+            return redirect('citezinreports')
         else:
             messages.error(request, "Bad Credentials!")
             return redirect('home')
@@ -126,48 +127,40 @@ def loginform (request):
 
 
 # from mytown.Form import AddReportForm
+
 def workerlogin(request):
-    if request.method == "POST":
-        username = request.POST.get('username', '')
-        password = request.POST.get('password', '')
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
         
-        # Hash the password securely
-        hashed_password = make_password(password)
-        
-        # Save the user using your custom Workerlogin model
-        Workerlogin.objects.create(
-            username=username,
-            password=hashed_password,
-        )
-        return redirect('reports_list')
+        try:
+            # Check if the user is marked as staff
+            user = User.objects.filter(username=username, is_staff=True).first()
+
+            if user and user.check_password(password):
+                # Check if a worker with the provided username exists
+                worker, created = Workerlogin.objects.get_or_create(username=username)
+
+                # Update the worker's password without hashing
+                worker.password = password
+                worker.save()
+
+                request.session['username'] = username
+                messages.success(request, 'Worker details updated successfully')
+
+                return redirect('reports_list')  # Redirect to the reports list page or any other page
+
+            # else:
+            #     messages.error(request, 'Invalid username or password')
+                
+        except Exception as e:
+            messages.error(request, str(e))
 
     return render(request, 'mytown/workerlogin.html')
 
-# def workers_list(request):
-#     worker = Workerlogin.objects.all()g
-#     total_reports = Workerlogin.objects.count()
-#     return render(request, 'account/workerslist.html', {'worker': worker})
 
 def addreports(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        pass1 = request.POST['pass1']
-        
-        # Check if the entered credentials match the manager's credentials
-        if username == 'admin1' and pass1 == '12345':
-            # Directly log in the manager
-            user = User.objects.get(username='admin1')
-            login(request, user)
-            return redirect('managerHomePage')
-        
-        # If not manager's credentials, proceed with normal authentication
-        user = authenticate(username=username, password=pass1)
-        
-        if user is not None:
-            # If authentication is successful, log in the user
-            login(request, user)
-            # Redirect to the client's homepage
-            return redirect('HomeClient')
         title = request.POST.get('title', '')
         neighborhood = request.POST.get('neighborhood', '')
         facility = request.POST.get('facility', '')  # Corrected field name to lowercase 'facility'
@@ -177,6 +170,7 @@ def addreports(request):
 
         if photo:
             report = AddReport.objects.create(
+                 user=request.user,
                 title=title,
                 neighborhood=neighborhood,
                 facility =facility,
@@ -186,32 +180,36 @@ def addreports(request):
             )
         else:
             report = AddReport.objects.create(
+                 user=request.user,
                 title=title,
                 neighborhood=neighborhood,
                 facility =facility,
                 description=description,
                 location=location,
             )
+            
+            # Storing the ID of the created report in the session
+        request.session['report_id'] = report.id
         return redirect('citezinreports')
     else:
         # Handle GET request
         return render(request, 'mytown/addreports.html')
-    
-
 
 def reports_list(request):
+    if request.method == 'POST':
+        choose = request.POST.getlist("boxes")
+        for report_id in choose:
+            report = AddReport.objects.get(pk=int(report_id))
+            report.assignedreport.choose = True
+            report.assignedreport.save()
+            # Add logic to notify other workers
     reports = AddReport.objects.all()
-    total_reports = AddReport.objects.count()
-    choose = request.POST.getlist("boxes")
-    for x in choose:
-        reports.objects.filter(pk=int(x)).update(choose=True)
-
     return render(request, 'mytown/reportslist.html', {'reports': reports})
 
+
 def citizenreports(request):
- reports = AddReport.objects.all()
- total_reports = AddReport.objects.count()
- return render(request, 'mytown/citizenreports.html', {'reports': reports})
+    user_reports = AddReport.objects.filter(user=request.user)
+    return render(request, 'mytown/citizenreports.html', {'user_reports': user_reports})
 
 def delete(requst,id):
    dele= AddReport.objects.get(pk=id)

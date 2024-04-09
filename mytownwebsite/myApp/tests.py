@@ -2,6 +2,7 @@ from django.test import TestCase
 from .models import AddReport,AssignedReport,citezinreports,Workerlogin
 from datetime import date
 from .models import *
+from views import *
 
 from django.test import TestCase, RequestFactory
 from django.contrib.auth.models import User
@@ -9,7 +10,6 @@ from django.contrib.messages.storage.fallback import FallbackStorage
 from django.contrib import messages
 from django.shortcuts import redirect
 
-from mytownwebsite.views import signup
 
 class SignupTestCase(TestCase):
     def setUp(self):
@@ -151,7 +151,6 @@ from django.contrib.messages.storage.fallback import FallbackStorage
 from django.contrib import messages
 from django.shortcuts import redirect
 
-from mytownwebsite.views import signup
 
 class SignupTestCase(TestCase):
     def setUp(self):

@@ -73,10 +73,10 @@ button:hover {
   <h2>Login</h2>
  <form>
     <!-- Three buttons for submission -->
-    <button type="submit" >Citezin Login</button>
-
+  <button type="button" onclick="window.location.href='{% url 'index' %}'" style="margin-right: 10px;">Citizen Login </button>
 <button type="button" onclick="window.location.href = '{% url 'workerlogin' %}'">Worker Login</button>
-    <button type="submit">Manager Login</button>
+  <button type="button" onclick="window.location.href='{% url 'sign' %}'" style="margin-right: 10px;">Manager Login</button>
+
   </form>
 </div>
 </div>
