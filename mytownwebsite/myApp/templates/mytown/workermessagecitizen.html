@@ -115,8 +115,18 @@
                 <textarea id="message" rows="4" placeholder="Write your message"></textarea>
             </div>
             
-            <button onclick="sendMessage()">Send Message</button>
-        </div>
+            <div class="content">
+                <h1>MESSAGE TO CITIZEN</h1>
+                <form action="/workermessagecitizen/" method="post">
+    
+               
+                
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>        </div>
     </div>
 
     <script>

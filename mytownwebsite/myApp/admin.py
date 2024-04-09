@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import AddReport
-from .models import AddReport, AssignedReport, Workerlogin,citezinreports,ManagerReports
+from .models import AddReport, AssignedReport, Workerlogin, citezinreports, ManagerReports, Message, ContactUs,workermessagemanager,workermessagecitizen
 from django.utils import timezone 
 from .models import citezinreports
 from django.utils import timezone
@@ -35,3 +35,27 @@ class CitezinReportAdmin(admin.ModelAdmin):
 #     list_display = ('number','worker')
 #     list_filter = ('id','number')
 #     search_fields=('id','number')
+
+@admin.register(Message)
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ('worker_name', 'worker_email', 'message', 'created_at')
+    list_filter = ('created_at',)
+    search_fields = ('worker_name', 'message')
+
+@admin.register(ContactUs)
+class ContactUsAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'message', 'created_at')
+    list_filter = ('created_at',)
+    search_fields = ('name', 'email', 'message')
+
+@admin.register(workermessagemanager)
+class workermessagemanagerAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'message', 'created_at')
+    list_filter = ('created_at',)
+    search_fields = ('name', 'email', 'message')
+
+@admin.register(workermessagecitizen)
+class workermessagecitizenAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'message', 'created_at')
+    list_filter = ('created_at',)
+    search_fields = ('name', 'email', 'message')

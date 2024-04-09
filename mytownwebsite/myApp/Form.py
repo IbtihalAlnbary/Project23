@@ -1,6 +1,6 @@
 from .models import AddReport
 from django import forms
-
+from .models import Message
 class AddReportForm(forms.ModelForm):
     class Meta:
         model = AddReport
@@ -21,3 +21,7 @@ class AddReportForm(forms.ModelForm):
             'location': forms.TextInput(attrs={'class': 'form-control'}),
             'picture': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
         }
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ['worker_name', 'worker_email', 'message']

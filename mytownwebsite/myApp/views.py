@@ -2,6 +2,7 @@ from django.shortcuts import render
 from telnetlib import LOGOUT
 LOGOUT = b'logout'
 from django.http import HttpResponse
+from .Form import MessageForm
 
 from django.contrib.auth.hashers import make_password  # Import make_password for password hashing
 from django.db.models import F
@@ -20,6 +21,8 @@ from django.utils import timezone
 from .models import ManagerReports
 from .models import citezinreports
 from .models import Workerlogin
+from .models import ContactUs  # Assuming you have a model named ContactUs
+
 # 
 from django.shortcuts import render, get_object_or_404
 from .models import AddReport
@@ -226,18 +229,17 @@ def updatereport(request, id):
     return render(request, 'mytown/editreport.html', {'form':form})
 
 def contactus(request):
-    if request.method=="POST":
-        contactus=contactus()
-        name=request.POST.get('name')
-        email=request.POST.get('email')
-        Description=request.POST.get('Description')
-        contactus.name=name
-        contactus.email=email
-        contactus.Description=Description
-        contactus.save()
+    if request.method == "POST":
+        contact_form = ContactUs()  # Rename the variable
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        description = request.POST.get('description')  # Fix the variable name
+        contact_form.name = name
+        contact_form.email = email
+        contact_form.description = description
+        contact_form.save()
         return HttpResponse("<h1> THANKS FOR CONTACT US</h1>")
-    return render(request,'mytown/contactus.html')
-
+    return render(request, 'mytown/contactus.html')
 def managermessageworker(request):
     if request.method=="POST":
         messageworker=messageworker()
@@ -259,7 +261,15 @@ def deleteworker(request):
     return render(request,'mytown/deleteworker.html')
 
 def workermessagemanager(request):
-    return render(request,'workermessagemanager.html')
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('HomeClient')  # Redirect to a new URL
+    else:
+        form = MessageForm()
+    return render(request, 'mytown/workermessagemanager.html', {'form': form})
+
 
 def workerFinish(request):
     return render(request,'workerFinish.html')
@@ -268,9 +278,34 @@ def workerFinish(request):
 def managermessagecitizen (request):
     return render(request,'mytown/managermessagecitizen.html')
 
-def citizenmessageworker (request):
-    return render(request,'mytown/citizenmessageworker.html')
+def citizenmessageworker(request):
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('HomeClient')  # Redirect to a new URL
+    else:
+        form = MessageForm()
+    return render(request, 'mytown/citizenmessageworker.html', {'form': form})
 
-def workermessagecitizen (request):
-    return render(request,'mytown/workermessagecitizen.html')
+def workermessagecitizen(request):
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('HomeClient')  # Redirect to a new URL
+    else:
+        form = MessageForm()
+    return render(request, 'mytown/workermessagecitizen.html', {'form': form})
+
+
+def managermessageworker(request):
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('HomeClient')  # Redirect to a new URL
+    else:
+        form = MessageForm()
+    return render(request, 'mytown/managermessageworker.html', {'form': form})
 

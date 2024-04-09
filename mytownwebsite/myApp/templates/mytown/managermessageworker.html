@@ -104,20 +104,13 @@
             <h1>MESSAGE TO WORKER</h1>
             <form action="/managermessageworker/" method="post">
 
-            <div class="form-group">
-                <label for="workerName">Worker Name:</label>
-                <input type="text" id="workerName" placeholder="Enter worker's name">
-            </div>
-            <div class="form-group">
-                <label for="workerEmail">Worker Email:</label>
-                <input type="text" id="workerEmail" placeholder="Enter worker's email">
-            </div>
-            <div class="form-group">
-                <label for="message">Message:</label>
-                <textarea id="message" rows="4" placeholder="Write your message"></textarea>
-            </div>
+           
             
-            <button onclick="sendMessage()">Send Message</button>
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Send Message</button>
+            </form>
         </div>
     </div>
 
