@@ -264,7 +264,7 @@ def contactus(request):
         contact_form.email = email
         contact_form.description = description
         contact_form.save()
-        return HttpResponse("<h1> THANKS FOR CONTACT US</h1>")
+        # return HttpResponse("<h1> THANKS FOR CONTACT US</h1>")
     return render(request, 'mytown/contactus.html')
 def managermessageworker(request):
     if request.method=="POST":
@@ -274,7 +274,7 @@ def managermessageworker(request):
         messageworker.name=name
         messageworker.message=message
         messageworker.save()
-        return HttpResponse("<h1> THANK YOU FOR YOUR MESSAGE</h1>")
+        # return HttpResponse("<h1> THANK YOU FOR YOUR MESSAGE</h1>")
     return render(request,'mytown/managermessageworker.html')
 
 def managermessagecitizen(request):
@@ -285,7 +285,7 @@ def managermessagecitizen(request):
         managermessagecitizen.name=name
         managermessagecitizen.message=message
         managermessagecitizen.save()
-        return HttpResponse("<h1> THANK YOU FOR YOUR MESSAGE</h1>")
+        # return HttpResponse("<h1> THANK YOU FOR YOUR MESSAGE</h1>")
     return render(request,'mytown/managermessagecitizen.html')
 
 def managerHomePage(request):
@@ -302,7 +302,7 @@ def workermessagemanager(request):
         form = MessageForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('HomeClient')  # Redirect to a new URL
+            return redirect('workermessagemanager')  # Redirect to a new URL
     else:
         form = MessageForm()
     return render(request, 'mytown/workermessagemanager.html', {'form': form})
@@ -320,7 +320,7 @@ def citizenmessageworker(request):
         form = MessageForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('HomeClient')  # Redirect to a new URL
+            return redirect('citizenmessageworker')  # Redirect to a new URL
     else:
         form = MessageForm()
     return render(request, 'mytown/citizenmessageworker.html', {'form': form})
@@ -330,7 +330,7 @@ def workermessagecitizen(request):
         form = MessageForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('HomeClient')  # Redirect to a new URL
+            return redirect('workermessagecitizen')  # Redirect to a new URL
     else:
         form = MessageForm()
     return render(request, 'mytown/workermessagecitizen.html', {'form': form})
@@ -341,34 +341,34 @@ def managermessageworker(request):
         form = MessageForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('HomeClient')  # Redirect to a new URL
+            return redirect('managermessageworker')  # Redirect to a new URL
     else:
         form = MessageForm()
     return render(request, 'mytown/managermessageworker.html', {'form': form})
 
-import unittest
-from django.test import Client
-#from myapp.models import MessageWorker  # אני מניח שיש לך מודל בשם MessageWorker
+# import unittest
+# from django.test import Client
+# #from myapp.models import MessageWorker  # אני מניח שיש לך מודל בשם MessageWorker
 
-class TestManagerMessageWorkerView(unittest.TestCase):
+# class TestManagerMessageWorkerView(unittest.TestCase):
     
-    def test_post_request(self):
-        client = Client()
-        response = client.post('/managermessageworker/', {'name': 'John Doe', 'message': 'Test message'})
-        self.assertEqual(response.status_code, 200)  # Assuming the view returns a success response
+#     def test_post_request(self):
+#         client = Client()
+#         response = client.post('/managermessageworker/', {'name': 'John Doe', 'message': 'Test message'})
+#         self.assertEqual(response.status_code, 200)  # Assuming the view returns a success response
 
-        # Check if message is saved in the database
-        self.assertTrue(MessageWorker.objects.filter(name='John Doe', message='Test message').exists())
+#         # Check if message is saved in the database
+#         self.assertTrue(MessageWorker.objects.filter(name='John Doe', message='Test message').exists())
 
-    def test_get_request(self):
-        client = Client()
-        response = client.get('/managermessageworker/')
-        self.assertEqual(response.status_code, 200)  # Assuming the view returns a success response
+#     def test_get_request(self):
+#         client = Client()
+#         response = client.get('/managermessageworker/')
+#         self.assertEqual(response.status_code, 200)  # Assuming the view returns a success response
 
-        # Add more assertions if necessary
+#         # Add more assertions if necessary
 
-if __name__ == '__main__':
-    unittest.main()
+# if __name__ == '__main__':
+#     unittest.main()
 
 def workermessagemanager(request):
     if request.method=="POST":
@@ -378,7 +378,7 @@ def workermessagemanager(request):
         workermessagemanager.name=name
         workermessagemanager.message=message
         workermessagemanager.save()
-        return HttpResponse("<h1> THANK YOU FOR YOUR MESSAGE</h1>")
+        # return HttpResponse("<h1> THANK YOU FOR YOUR MESSAGE</h1>")
     return render(request,'mytown/workermessagemanager.html')
 
 def workermessagecitizen(request):

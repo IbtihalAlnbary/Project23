@@ -6,6 +6,59 @@
     <title>MYTOWNWEB</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <style>
+    
+        /* Style for modal content */
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 400px;
+            padding: 40px;
+            transform: translate(-50%, -50%);
+            background: #ffffff; /* White background */
+            box-shadow: 0 15px 25px rgba(0,0,0,.6);
+            border-radius: 10px;
+            text-align: center; /* Center text inside modal box */
+        }
+
+        /* Style for close button */
+        .close {
+            color: #333333;
+            position: absolute; /* Position relative to parent */
+            top: 5px;
+            right: 5px;
+            font-size: 28px;
+            font-weight: bold;
+            line-height: 16px; /* Adjust line height to center the 'x' */
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Style for logout button */
+        .logout-btn {
+            background-color: transparent;
+            color: #243b55;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            font-family: 'Trocchi', serif;  /* Add the font family here */
+        }
+
+        .logout-btn:hover {
+            color: #fc0303; /* Fixed color */
+        }
+
+        /* Style for icon inside the logout button */
+        .logout-icon {
+            color: rgb(255, 255, 255); /* Blue color for the icon */
+        }
+
+
         html, body {
             height: 100%;
             margin: 0;
@@ -19,6 +72,7 @@
         .navbar {
             background-color: white !important; /* Change background color to white */
             color: black; /* Change text color to black */
+            padding: 10px; /* Adjust padding */
         }
 
         .container {
@@ -77,59 +131,114 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">MyTown</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">My Reports</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Add Report</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contact us</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <div class="content">
-            <h1>MESSAGE TO CITIZEN</h1>
-            <div class="form-group">
-                <label for="citizenName">Citizen Name:</label>
-                <input type="text" id="citizenName" placeholder="Enter citizen's name">
-            </div>
-            <div class="form-group">
-                <label for="citizenEmail">Citizen Email:</label>
-                <input type="text" id="citizenEmail" placeholder="Enter citizen's email">
-            </div>
-            <div class="form-group">
-                <label for="message">Message:</label>
-                <textarea id="message" rows="4" placeholder="Write your message"></textarea>
-            </div>
-            
-            <button onclick="sendMessage()">Send Message</button>
+
+      <a class="navbar-brand" href="#">MyTown</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'managerreports' %}">Reports list</a>
+          </li>
+          <li class="nav-item" style="margin-left: 10px;">
+            <label for="messageType" style="margin-bottom: 0; color: #000; font-weight: 400; line-height: 1.5; font-size: 1rem; margin-right: 10px;"></label>
+            <select id="messageType" onchange="handleMessageType()" style="margin-bottom: 0; border: none; padding: .375rem .75rem; font-size: 1rem; line-height: 1.5; width: auto; color: #495057;">
+              <option value="">send message</option>
+              <option value="worker">Worker</option>
+              <option value="citizen">Citizen</option>
+            </select>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Delete worker</a>
+          </li>
+          <li class="nav-item">
+         <button class="logout-btn" onclick="openModal()">Log out</button>
+         </li>
+          {% comment %} <li class="nav-item">
+            <button class="logout-btn" onclick="openModal()">Logout</button>
+          </li> {% endcomment %}
+        </ul>
+      </div>
+    </div>
+</nav>
+
+<hr>
+
+<div class="container">
+    <div class="content">
+        <h1>MESSAGE TO CITIZEN</h1>
+        <div class="form-group">
+            <label for="citizenName">Citizen Name:</label>
+            <input type="text" id="citizenName" placeholder="Enter citizen's name">
+        </div>
+        <div class="form-group">
+            <label for="citizenEmail">Citizen Email:</label>
+            <input type="text" id="citizenEmail" placeholder="Enter citizen's email">
+        </div>
+        <div class="form-group">
+            <label for="message">Message:</label>
+            <textarea id="message" rows="4" placeholder="Write your message"></textarea>
+        </div>
+        
+        <button onclick="sendMessage()">Send Message</button>
+    </div>
+</div>
+
+<script>
+
+
+    // Send message function
+    function sendMessage() {
+        var citizenName = document.getElementById('citizenName').value;
+        var citizenEmail = document.getElementById('citizenEmail').value;
+        var message = document.getElementById('message').value;
+        if (citizenName.trim() !== '' && citizenEmail.trim() !== '' && message.trim() !== '') {
+            alert("Citizen name: " + citizenName + "\nCitizen email: " + citizenEmail + "\nMessage: " + message);
+        } else {
+            alert("Please enter citizen's name, email, and message.");
+        }
+    }
+
+    // Handle message type change
+    function handleMessageType() {
+        var messageType = document.getElementById('messageType').value;
+        if (messageType === 'worker') {
+            // Redirect or perform action for sending message to worker
+            window.location.href = '/managermessageworker';
+        } else if (messageType === 'citizen') {
+            // Redirect or perform action for sending message to citizen
+            window.location.href = '/managermessagecitizen';
+        }
+    }
+</script>
+
+<!-- The Modal for logout -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p>Are you sure you want to log out?</p>
+            <form id="logoutForm" action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
         </div>
     </div>
 
+    <!-- Script to open and close the modal -->
     <script>
-        function sendMessage() {
-            var citizenName = document.getElementById('citizenName').value;
-            var citizenEmail = document.getElementById('citizenEmail').value;
-            var message = document.getElementById('message').value;
-            if (citizenName.trim() !== '' && citizenEmail.trim() !== '' && message.trim() !== '') {
-                alert("Citizen name: " + citizenName + "\nCitizen email: " + citizenEmail + "\nMessage: " + message);
-            } else {
-                alert("Please enter citizen's name, email, and message.");
-            }
+        function openModal() {
+            document.getElementById('myModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('myModal').style.display = 'none';
         }
     </script>
+
+
 </body>
 </html>
