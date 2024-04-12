@@ -159,7 +159,25 @@ class workermessagecitizen(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Message from Worker to Citizen - {self.created_at}"  
+        return f"Message from Worker to Citizen - {self.created_at}"
+
+class managermessageworker(models.Model):
+    worker_name = models.CharField(max_length=255)
+    worker_email = models.EmailField()
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)  # Optionally, to record the time of creation
+
+    def __str__(self):
+        return f"Message to {self.worker_name} - {self.worker_email}"
+    
+class managermessagecitizen(models.Model):
+    name = models.CharField(max_length=255)
+    worker_email = models.EmailField()
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)  # Optionally, to record the time of creation
+
+    def __str__(self):
+        return f"Message to {self.worker_name} - {self.worker_email}"  
 # class contactus(models.Model):
 #     worker_name = models.CharField(max_length=255)
 #     worker_email = models.EmailField()

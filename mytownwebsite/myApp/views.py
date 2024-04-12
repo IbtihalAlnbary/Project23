@@ -236,12 +236,7 @@ def managerreports(request):
  total_reports = AddReport.objects.count()
  return render(request, 'mytown/managerlist.html', {'reports': reports})
 
-def addWorker(request):
-    return render(request,"mytown/addWorker.html" )
-# def profile(request):
-#  profile = signup.objects.all()
-# #  total_reports = AddReport.objects.count()
-#  return render(request, 'mytown/profile.html', {'profile': profile})
+
 
 def updatereport(request, id):
     report = get_object_or_404(AddReport, id=id)

@@ -1,22 +1,15 @@
-from django.test import TestCase
-from .models import AddReport,AssignedReport,citezinreports,Workerlogin
-from datetime import date
-from .models import *
-
-
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, Client
+from django.urls import reverse
 from django.contrib.auth.models import User
-from django.contrib.messages.storage.fallback import FallbackStorage
-from django.contrib import messages
-from django.shortcuts import redirect
+from django.test import RequestFactory
 
+from myApp.models import AddReport, AssignedReport, Workerlogin, managermessagecitizen, managermessageworker
 
 
 class AddReportModelTest(TestCase):
     def setUp(self):
         AddReport.objects.create(
             title='Test Report',
-            # email='test@example.com',
             neighborhood='BEER',
             description='Test description',
             location='Test location'
@@ -27,30 +20,25 @@ class AddReportModelTest(TestCase):
         self.assertEqual(str(report), 'Test Report')
 
     def test_report_save_and_retrieve(self):
-       
         AddReport.objects.create(
             title='New Report',
-            # email='new@example.com',
             neighborhood='ASD',
             description='New description',
             location='New location'
         )
-        
         saved_report = AddReport.objects.get(title='New Report')
 
         self.assertEqual(saved_report.title, 'New Report')
-        # self.assertEqual(saved_report.email, 'new@example.com')
         self.assertEqual(saved_report.neighborhood, 'ASD')
         self.assertEqual(saved_report.description, 'New description')
         self.assertEqual(saved_report.location, 'New location')
- 
 
 
 class AddReportTestCase(TestCase):
     def setUp(self):
         self.report = AddReport.objects.create(
             title="Test Report",
-             neighborhood="Beer Sheva",
+            neighborhood="Beer Sheva",
             description="Test description",
             location="Test location",
         )
@@ -61,63 +49,39 @@ class AddReportTestCase(TestCase):
         self.assertEqual(self.report.description, "Test description")
         self.assertEqual(self.report.location, "Test location")
 
+
 class ReportsListTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create(username="testuser")
         self.report = AddReport.objects.create(
             title="Test Report",
-        neighborhood="Beer Sheva",
+            neighborhood="Beer Sheva",
             description="Test description",
             location="Test location",
         )
         self.reportslist = AssignedReport.objects.create(
-            # date=date.today(),
-             reportnumber=1,
+            reportnumber=1,
             choose=False,
             reports=self.report,
         )
 
     def test_reports_list_creation(self):
-        # self.assertEqual(self.reportslist.date, date.today())
-        self.assertEqual(self.reportslist. reportnumber, 1)
+        self.assertEqual(self.reportslist.reportnumber, 1)
         self.assertFalse(self.reportslist.choose)
         self.assertEqual(self.reportslist.reports, self.report)
 
+
 class WorkerLoginTestCase(TestCase):
     def setUp(self):
-        self.worker = Workerlogin.objects.create(username="testworker", password="testpassword")
+        self.worker = Workerlogin.objects.create(username="tom", password="123maisa")
 
     def test_worker_login_creation(self):
-        self.assertEqual(self.worker.username, "testworker")
-        self.assertEqual(self.worker.password, "testpassword")
-
-# from django.test import TestCase, RequestFactory
-# from django.contrib.auth.models import User
-# from django.contrib.messages.storage.fallback import FallbackStorage
-# from django.contrib import messages
-# from django.shortcuts import redirect
-
-# from mytownwebsite.views import signup
-
-
-
-
-
-
-
-
-from django.test import TestCase, Client
-from django.urls import reverse
-from django.contrib.auth.models import User
-from django.contrib.auth import logout
-
-from django.contrib.auth import authenticate, login
+        self.assertEqual(self.worker.username, "tom")
+        self.assertEqual(self.worker.password, "123maisa")
 
 
 class SignUpTest(TestCase):
-    
     def test_signup(self):
-        # Prepare data for the test
         data = {
             'username': 'testuser',
             'fname': 'Test',
@@ -126,63 +90,36 @@ class SignUpTest(TestCase):
             'pass1': 'testpassword',
             'pass2': 'testpassword',
         }
-
-        # Send POST request to signup endpoint with test data
         response = self.client.post(reverse('signup'), data)
-
-        # Check if the user was created successfully
         self.assertEqual(response.status_code, 302)  # Redirect status code
-        self.assertRedirects(response, reverse('signin'))  # Check redirection to signin page
+        self.assertRedirects(response, reverse('signin'))
 
-        # Check if the user exists in the database
         created_user = User.objects.get(username='testuser')
         self.assertIsNotNone(created_user)
         self.assertEqual(created_user.first_name, 'Test')
         self.assertEqual(created_user.last_name, 'User')
         self.assertEqual(created_user.email, 'test@example.com')
-
-        # Clean up after the test
         created_user.delete()
 
 
-
-
-  
-
 class LogoutRequestTest(TestCase):
-    
     def setUp(self):
         self.client = Client()
         self.username = 'testuser'
         self.password = 'testpassword'
-        
-        # Create a test user
         self.user = User.objects.create_user(username=self.username, password=self.password)
-    
+
     def test_logout_request(self):
-        # Log in the test user
         self.client.login(username=self.username, password=self.password)
-        
-        # Make a request to the logout endpoint
         response = self.client.get(reverse('logout'))
-        
-        # Check if the user is logged out
         self.assertNotIn('_auth_user_id', self.client.session)
-        
-        # Check if the response redirects to the home page
         self.assertRedirects(response, reverse('home'))
-        
-        # Check if the "Logged out successfully!" message is displayed
         messages = list(response.context['messages'])
         self.assertEqual(len(messages), 1)
         self.assertEqual(str(messages[0]), "Logged out successfully!")
 
 
-
-
-
 class TestViews(TestCase):
-
     def setUp(self):
         self.client = Client()
         self.signin_url = reverse('signin')
@@ -192,7 +129,6 @@ class TestViews(TestCase):
         self.worker_home_url = reverse('workerHomePage')
         self.index_url = reverse('index')
 
-    
     def test_signin_view(self):
         response = self.client.get(self.signin_url)
         self.assertEqual(response.status_code, 200)
@@ -224,174 +160,46 @@ class TestViews(TestCase):
         self.assertTemplateUsed(response, 'mytown/index.html')
 
 
-import unittest
-from django.test import Client
-
-class TestContactUsView(unittest.TestCase):
-    
+class TestContactUsView(TestCase):
     def test_post_request(self):
         client = Client()
         response = client.post('/contactus/', {'name': 'John Doe', 'email': 'john@example.com', 'description': 'Test message'})
         self.assertEqual(response.status_code, 200)  # Assuming the view returns a success response
-
-        # Add more assertions if necessary
 
     def test_get_request(self):
         client = Client()
         response = client.get('/contactus/')
         self.assertEqual(response.status_code, 200)  # Assuming the view returns a success response
 
-        # Add more assertions if necessary
 
-if __name__ == '__main__':
-    unittest.main()
-
-
-import unittest
-from django.test import Client
-from myapp.models import ManagerMessageCitizen  # אני מניח שיש לך מודל בשם ManagerMessageCitizen
-
-class TestManagerMessageCitizenView(unittest.TestCase):
-    
-    def test_post_request(self):
-        client = Client()
-        response = client.post('/managermessagecitizen/', {'name': 'John Doe', 'message': 'Test message'})
-        self.assertEqual(response.status_code, 200)  # Assuming the view returns a success response
-
-        # Check if message is saved in the database
-        self.assertTrue(ManagerMessageCitizen.objects.filter(name='John Doe', message='Test message').exists())
+class ManagerMessageWorkerViewTest(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
 
     def test_get_request(self):
-        client = Client()
-        response = client.get('/managermessagecitizen/')
-        self.assertEqual(response.status_code, 200)  # Assuming the view returns a success response
-
-        # Add more assertions if necessary
-
-if __name__ == '__main__':
-    unittest.main()
-
-
-import unittest
-from django.test import Client
-from mytownwebsite.models import WorkerMessageManager  # אני מניח שיש לך מודל בשם WorkerMessageManager
-
-class TestWorkerMessageManagerView(unittest.TestCase):
-    
-    def test_post_request(self):
-        client = Client()
-        response = client.post('/workermessagemanager/', {'name': 'John Doe', 'message': 'Test message'})
-        self.assertEqual(response.status_code, 200)  # Assuming the view returns a success response
-
-        # Check if message is saved in the database
-        self.assertTrue(WorkerMessageManager.objects.filter(name='John Doe', message='Test message').exists())
-
-    def test_get_request(self):
-        client = Client()
-        response = client.get('/workermessagemanager/')
-        self.assertEqual(response.status_code, 200)  # Assuming the view returns a success response
-
-        # Add more assertions if necessary
-
-if __name__ == '__main__':
-    unittest.main()
-
-
-
-import unittest
-from django.test import Client
-from mytownwebsite.models import WorkerMessageCitizen  # אני מניח שיש לך מודל בשם WorkerMessageCitizen
-
-class TestWorkerMessageCitizenView(unittest.TestCase):
-    
-    def test_post_request(self):
-        client = Client()
-        response = client.post('/workermessagecitizen/', {'name': 'John Doe', 'message': 'Test message'})
-        self.assertEqual(response.status_code, 200)  # Assuming the view returns a success response
-
-        # Check if message is saved in the database
-        self.assertTrue(WorkerMessageCitizen.objects.filter(name='John Doe', message='Test message').exists())
-
-    def test_get_request(self):
-        client = Client()
-        response = client.get('/workermessagecitizen/')
-        self.assertEqual(response.status_code, 200)  # Assuming the view returns a success response
-
-        # Add more assertions if necessary
-
-if __name__ == '__main__':
-    unittest.main()
-
-import unittest
-from django.test import Client
-from django.urls import reverse
-from mytownwebsite.models import Worker  # אני מניח שיש לך מודל בשם Worker
-
-class TestDeleteWorkerView(unittest.TestCase):
-
-    def test_post_request(self):
-        # Create a test worker
-        test_worker = Worker.objects.create(name='Test Worker', id=12345)
-
-        # Create a client
-        client = Client()
-
-        # Prepare data for POST request
-        data = {
-            'workerName': 'Test Worker',
-            'workerID': 12345,
-            'reason': 'Test reason for deletion'
-        }
-
-        # Send POST request to delete worker
-        response = client.post(reverse('delete_worker'), data)
-
-        # Check if worker is deleted from the database
-        self.assertFalse(Worker.objects.filter(name='Test Worker', id=12345).exists())
-
-        # Check if response status code is 200 (OK)
+        request = self.factory.get(reverse('managermessageworker'))
+        request.user = User.objects.create(username='testuser')
+        response = managermessageworker(request)
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'mytown/managermessageworker.html')
+        self.assertIn('form', response.context)
 
-        # Check if response contains success message
-        self.assertIn(b'Worker Deleted Successfully', response.content)
-
-    def test_get_request(self):
-        # Create a client
-        client = Client()
-
-        # Send GET request to delete worker page
-        response = client.get(reverse('delete_worker'))
-
-        # Check if response status code is 200 (OK)
-        self.assertEqual(response.status_code, 200)
-
-        # Add more assertions if necessary
-
-if __name__ == '__main__':
-    unittest.main()
-from django.test import TestCase, Client
-from django.urls import reverse
-
-class FinishJobTestCase(TestCase):
     def test_post_request(self):
-        client = Client()
-        # Prepare data for POST request
-        data = {
-            'workPlace': 'Office',
-            'workDuration': '8 hours',
-            'additionalNotes': 'Completed tasks A, B, and C.'
-        }
-        # Send POST request
-        response = client.post(reverse('finish_job'), data)
-        # Check if the response is successful (status code 200)
-        self.assertEqual(response.status_code, 200)
-        # Check if the response contains the success message
-        self.assertIn(b'Job Finished Successfully', response.content)
+        request = self.factory.post(reverse('managermessageworker'), data={'message_text': 'Test message'})
+        request.user = User.objects.create(username='testuser')
+        response = managermessageworker(request)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('managerHomePage'))  # Corrected redirect URL
+        self.assertTrue(managermessageworker.objects.filter(message_text='Test message').exists())
 
-    def test_get_request(self):
-        client = Client()
-        # Send GET request
-        response = client.get(reverse('finish_job'))
-        # Check if the response is successful (status code 200)
-        self.assertEqual(response.status_code, 200)
-        # Add more assertions if necessary
+class ManagerMessageCitizenModelTest(TestCase):
+    def setUp(self):
+        self.message = managermessagecitizen.objects.create(
+            name='John Doe',
+            worker_email='worker@example.com',
+            message='Test message'
+        )
+
+    def test_string_representation(self):
+        expected_string = f"Message to {self.message.name} - {self.message.worker_email}"
+        self.assertEqual(str(self.message), expected_string)
