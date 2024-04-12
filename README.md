@@ -60,8 +60,8 @@ Managers can generate reports and analytics to identify trends, allocate resourc
 The control panel includes administrative features to manage user accounts, monitor system activity, and ensure the platform's security and integrity.
 ### 4.Built With
 - visual studio code.
-- Python 3.11
-- Django 4.1.3
+- Python 3.11.9
+- Django 5.0.3
 - Sqlite3
 - HTML
 
