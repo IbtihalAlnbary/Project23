@@ -72,7 +72,7 @@ class AddReport(models.Model):
             reports=self,  # Use self.id after saving
             reportnumber=self.id,
         )
-       citizen = citizinReports.objects.create(
+       citizen = citezinReports.objects.create(
             reports=self,  # Use self.id after saving
             reportnumber=self.id,
         )
