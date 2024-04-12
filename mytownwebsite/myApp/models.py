@@ -6,6 +6,7 @@ from django.db import models
 
 
 class AddReport(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=500)
 
     CITY_CHOICES = [
@@ -53,7 +54,7 @@ class AddReport(models.Model):
 
     ]
 
-    facility =models.CharField(max_length=150, choices=CHOICES,default='')
+    facility =models.CharField(max_length=150, choices=CHOICES,default=1)
     description = models.CharField(max_length=1000, null=True)
     location = models.CharField(max_length=500)
     picture= models.ImageField(upload_to='images/', blank=True, null=True)
@@ -71,7 +72,7 @@ class AddReport(models.Model):
             reports=self,  # Use self.id after saving
             reportnumber=self.id,
         )
-       citizen = citezinreports.objects.create(
+       citizen = citizinReports.objects.create(
             reports=self,  # Use self.id after saving
             reportnumber=self.id,
         )
@@ -93,21 +94,19 @@ class AssignedReport(models.Model):
 
 
 class Workerlogin(models.Model):
-    username = models.CharField(max_length=100)
-    password = models.CharField(max_length=255)
-
-   
+    username = models.CharField(max_length=100, primary_key=True)  # Assuming 'username' as the primary key
+    password = models.CharField(max_length=100)
     
     def __str__(self):
         return self.username
-
-   
 class Meta:
         db_table = 'workerlogin'
 
-class citezinreports(models.Model):
-     reports = models.ForeignKey(AddReport, blank=True, null=True, on_delete=models.CASCADE)
-     reportnumber = models.IntegerField(default=0)
+
+class citezinReports(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    reportnumber = models.IntegerField(default=0)
+    reports = models.ForeignKey(AddReport, blank=True, null=True, on_delete=models.CASCADE)
 
 def __str__(self):
         return f"Citizen Report for {self.reports.title}"
@@ -124,22 +123,3 @@ class ManagerReports(models.Model):
         return f"Manager Report for {self.reports.title}"
     class Meta:
         db_table = 'managerreports'
-
-
-
-# class workerslist(models.Model):
-#     workers = models.OneToOneField(Workerlogin, on_delete=models.CASCADE)
-#     number = models.IntegerField(default=0)
-
-    
-#     def __str__(self):
-#         return f"Report for {self.workers.username}"
-
-#     class Meta:
-#         db_table = 'workerslist'
-
-# class Ckeckreport(models.Model):
-#     reports = models.ForeignKey(AddReport, blank=True, null=True, on_delete=models.CASCADE)
-#     choose = models.BooleanField(default=False)  
-#     def __str__(self):
-#         return f"Check Report for {self.reports.title}"
