@@ -20,7 +20,7 @@ from.Form import AddReportForm
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from .models import ManagerReports
-from .models import citizinReports
+from .models import citizenReports
 from .models import Workerlogin
 from .models import ContactUs  # Assuming you have a model named ContactUs
 

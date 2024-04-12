@@ -72,7 +72,7 @@ class AddReport(models.Model):
             reports=self,  # Use self.id after saving
             reportnumber=self.id,
         )
-       citizen = citizinReports.objects.create(
+       citizen = citizenReports.objects.create(
             reports=self,  # Use self.id after saving
             reportnumber=self.id,
         )
@@ -103,7 +103,7 @@ class Meta:
         db_table = 'workerlogin'
 
 
-class citizinReports(models.Model):
+class citizenReports(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     reportnumber = models.IntegerField(default=0)
     reports = models.ForeignKey(AddReport, blank=True, null=True, on_delete=models.CASCADE)
